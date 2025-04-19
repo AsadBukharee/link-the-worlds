@@ -1,30 +1,78 @@
-
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, Leaf, Building, Banknote } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const Home = () => {
   return (
     <div className="container mx-auto px-4 py-10">
-      {/* Hero Section */}
+      {/* Hero Carousel Section */}
       <section className="mb-20">
-        <div className="text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome to Flahi Gaon</h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8">Let's Make Our Village a Paradise</p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
-              <Link to="/register">Register Yourself</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link to="/donate">Donate Now</Link>
-            </Button>
-          </div>
-        </div>
+        <Carousel className="w-full max-w-6xl mx-auto">
+          <CarouselContent>
+            <CarouselItem>
+              <div className="relative h-[400px] w-full overflow-hidden rounded-xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81" 
+                  alt="Community" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
+                  <div className="text-white max-w-xl">
+                    <h1 className="text-4xl md:text-6xl font-bold mb-4">ہمارا64</h1>
+                    <p className="text-xl md:text-2xl mb-8">Let's Make Our Village a Paradise</p>
+                    <div className="flex flex-wrap gap-4">
+                      <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+                        <Link to="/register">Register Yourself</Link>
+                      </Button>
+                      <Button asChild variant="outline" size="lg" className="bg-white/10 backdrop-blur-sm hover:bg-white/20">
+                        <Link to="/donate">Donate Now</Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CarouselItem>
+            <CarouselItem>
+              <div className="relative h-[400px] w-full overflow-hidden rounded-xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" 
+                  alt="Technology" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
+                  <div className="text-white max-w-xl">
+                    <h2 className="text-4xl md:text-6xl font-bold mb-4">Building Together</h2>
+                    <p className="text-xl md:text-2xl mb-8">Join us in creating a better future</p>
+                  </div>
+                </div>
+              </div>
+            </CarouselItem>
+            <CarouselItem>
+              <div className="relative h-[400px] w-full overflow-hidden rounded-xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
+                  alt="Education" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
+                  <div className="text-white max-w-xl">
+                    <h2 className="text-4xl md:text-6xl font-bold mb-4">Empowering Education</h2>
+                    <p className="text-xl md:text-2xl mb-8">Supporting our future generations</p>
+                  </div>
+                </div>
+              </div>
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious className="left-4" />
+          <CarouselNext className="right-4" />
+        </Carousel>
       </section>
 
       {/* Features Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
+        
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
             <User className="h-10 w-10 text-primary mb-2" />
@@ -73,7 +121,7 @@ const Home = () => {
           </CardFooter>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow md:col-span-2 lg:col-span-3">
+        <Card className="hover:shadow-lg transition-shadow md:col-span-2 lg:col-span-3 bg-gradient-to-r from-primary/5 to-primary/10">
           <CardHeader>
             <Calendar className="h-10 w-10 text-primary mb-2" />
             <CardTitle>Ongoing Campaigns</CardTitle>

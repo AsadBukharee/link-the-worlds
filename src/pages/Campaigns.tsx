@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -118,6 +117,7 @@ const Campaigns = () => {
                 </div>
               </div>
             </CardHeader>
+            
             <CardContent className="space-y-4">
               <p>{campaign.description}</p>
               
@@ -145,9 +145,13 @@ const Campaigns = () => {
                 </ul>
               </div>
             </CardContent>
-            <CardFooter>
-              <Button asChild className="w-full">
+            
+            <CardFooter className="flex gap-4">
+              <Button asChild className="flex-1">
                 <Link to={`/campaigns/${campaign.id}`}>View Campaign</Link>
+              </Button>
+              <Button asChild variant="secondary" className="flex-1">
+                <Link to={`/donate?campaign=${campaign.id}`}>Donate Now</Link>
               </Button>
             </CardFooter>
           </Card>
