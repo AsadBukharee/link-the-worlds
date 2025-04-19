@@ -29,6 +29,8 @@ const Navbar = () => {
           <div className="hidden md:flex space-x-8">
             <Link to="/" className="hover:text-secondary transition-colors">Home</Link>
             <Link to="/campaigns" className="hover:text-secondary transition-colors">Campaigns</Link>
+            <Link to="/news" className="hover:text-secondary transition-colors">News</Link>
+            <Link to="/blog" className="hover:text-secondary transition-colors">Blog</Link>
             <Link to="/about" className="hover:text-secondary transition-colors">About</Link>
             <Link to="/donate" className="hover:text-secondary transition-colors">Donate</Link>
             <Link to="/register" className="hover:text-secondary transition-colors">Register</Link>
@@ -39,6 +41,8 @@ const Navbar = () => {
               <div className="flex flex-col p-4 space-y-4">
                 <Link to="/" className="hover:text-secondary transition-colors" onClick={toggleMenu}>Home</Link>
                 <Link to="/campaigns" className="hover:text-secondary transition-colors" onClick={toggleMenu}>Campaigns</Link>
+                <Link to="/news" className="hover:text-secondary transition-colors" onClick={toggleMenu}>News</Link>
+                <Link to="/blog" className="hover:text-secondary transition-colors" onClick={toggleMenu}>Blog</Link>
                 <Link to="/about" className="hover:text-secondary transition-colors" onClick={toggleMenu}>About</Link>
                 <Link to="/donate" className="hover:text-secondary transition-colors" onClick={toggleMenu}>Donate</Link>
                 <Link to="/register" className="hover:text-secondary transition-colors" onClick={toggleMenu}>Register</Link>

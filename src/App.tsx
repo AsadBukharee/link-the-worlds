@@ -12,6 +12,8 @@ import Sponsor from "@/pages/Sponsor";
 import Campaigns from "@/pages/Campaigns";
 import CampaignDetail from "@/pages/CampaignDetail";
 import About from "@/pages/About";
+import News from "@/pages/News";
+import Blog from "@/pages/Blog";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,7 +33,8 @@ const App = () => (
             <Route path="/campaigns" element={<Campaigns />} />
             <Route path="/campaigns/:id" element={<CampaignDetail />} />
             <Route path="/about" element={<About />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/news" element={<News />} />
+            <Route path="/blog" element={<Blog />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>

@@ -1,10 +1,24 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, Leaf, Building, Banknote } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { getRecentPosts } from "@/services/postService";
+import { Post } from "@/types/post";
+import NewsCard from "@/components/NewsCard";
 
 const Home = () => {
+  const [recentNews, setRecentNews] = useState<Post[]>([]);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      const posts = await getRecentPosts();
+      setRecentNews(posts.slice(0, 3));
+    };
+    fetchNews();
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-10">
       {/* Hero Carousel Section */}
@@ -136,6 +150,26 @@ const Home = () => {
             </Button>
           </CardFooter>
         </Card>
+      </section>
+
+      {/* News Feed Section */}
+      <section className="mb-20">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold mb-2">Latest Updates</h2>
+          <p className="text-muted-foreground">Stay informed with our village news</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {recentNews.map(post => (
+            <NewsCard key={post.id} post={post} />
+          ))}
+        </div>
+
+        <div className="text-center">
+          <Button asChild variant="outline" size="lg">
+            <Link to="/news">See All News</Link>
+          </Button>
+        </div>
       </section>
 
       {/* About Preview Section */}
