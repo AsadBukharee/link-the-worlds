@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, User, Leaf, Building, BankNote } from "lucide-react";
+import { Calendar, User, Leaf, Building, Banknote } from "lucide-react";
 
 const Home = () => {
   return (
@@ -43,7 +43,7 @@ const Home = () => {
 
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
-            <BankNote className="h-10 w-10 text-primary mb-2" />
+            <Banknote className="h-10 w-10 text-primary mb-2" />
             <CardTitle>Donate</CardTitle>
             <CardDescription>Support our community initiatives</CardDescription>
           </CardHeader>
