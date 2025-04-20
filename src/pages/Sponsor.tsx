@@ -1,3 +1,4 @@
+
 import Lottie from "lottie-react";
 import sponsorAnimation from "../assets/animations/sponsor.json";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,28 +14,28 @@ import { toast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+    message: "نام کم از کم 2 حروف کا ہونا چاہیے۔",
   }),
   amount: z.string().min(1, {
-    message: "Amount is required.",
+    message: "رقم درکار ہے۔",
   }),
   fundType: z.string().min(1, {
-    message: "Please select a fund type.",
+    message: "براہ کرم فنڈ کی قسم منتخب کریں۔",
   }),
   email: z.string().email({
-    message: "Please enter a valid email address.",
+    message: "براہ کرم درست ای میل ایڈریس درج کریں۔",
   }),
   phone: z.string().min(10, {
-    message: "Phone number must be valid.",
+    message: "فون نمبر درست ہونا چاہیے۔",
   }),
 });
 
 const fundTypes = [
-  { id: "1", name: "Imam Masjid" },
-  { id: "2", name: "Educational Fund" },
-  { id: "3", name: "Healthcare Fund" },
-  { id: "4", name: "Elderly Care" },
-  { id: "5", name: "Community Development" },
+  { id: "1", name: "امام مسجد" },
+  { id: "2", name: "تعلیمی فنڈ" },
+  { id: "3", name: "صحت کا فنڈ" },
+  { id: "4", name: "بزرگوں کی دیکھ بھال" },
+  { id: "5", name: "کمیونٹی ترقی" },
 ];
 
 const Sponsor = () => {
@@ -57,8 +58,8 @@ const Sponsor = () => {
     // Simulate API call
     setTimeout(() => {
       toast({
-        title: "Sponsorship Recorded",
-        description: "Thank you for your generosity!",
+        title: "اسپانسرشپ جمع کرا دی گئی",
+        description: "آپ کی سخاوت کا شکریہ!",
       });
       setIsSubmitting(false);
       form.reset();
@@ -78,21 +79,21 @@ const Sponsor = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h2 className="text-2xl font-bold mb-4">Why Sponsor?</h2>
-            <p className="mb-4">By sponsoring a fund, you make a lasting impact on our community. Your contribution helps sustain vital services and development projects.</p>
+            <h2 className="text-2xl font-bold mb-4 font-urdu text-right">اسپانسر کیوں کریں؟</h2>
+            <p className="mb-4 font-urdu text-right">فنڈ کو اسپانسر کر کے آپ ہماری کمیونٹی پر مستقل اثر ڈالتے ہیں۔ آپ کا تعاون ضروری خدمات اور ترقیاتی منصوبوں کو برقرار رکھنے میں مدد کرتا ہے۔</p>
             
-            <h3 className="text-xl font-bold mt-6 mb-3">Available Funds</h3>
+            <h3 className="text-xl font-bold mt-6 mb-3 font-urdu text-right">دستیاب فنڈز</h3>
             <ul className="space-y-4">
               {fundTypes.map((type) => (
-                <li key={type.id} className="bg-secondary p-4 rounded-md">
-                  <h4 className="font-bold">{type.name}</h4>
-                  <p className="text-sm text-muted-foreground">Supports our community through {type.name.toLowerCase()} initiatives</p>
+                <li key={type.id} className="bg-gradient-secondary p-4 rounded-md">
+                  <h4 className="font-bold font-urdu text-right">{type.name}</h4>
+                  <p className="text-sm text-muted-foreground font-urdu text-right">ہماری کمیونٹی کی {type.name.toLowerCase()} اقدامات کے ذریعے مدد کرتا ہے</p>
                 </li>
               ))}
             </ul>
           </div>
 
-          <Card className="backdrop-blur-sm bg-gradient-card">
+          <Card className="shadow-dual-color hover:shadow-dual-hover transition-shadow border-none bg-gradient-card">
             <CardHeader>
               <CardTitle className="font-urdu text-right">اسپانسرشپ فارم</CardTitle>
               <CardDescription className="font-urdu text-right">
@@ -107,11 +108,11 @@ const Sponsor = () => {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-urdu text-right">آپ کا نام</FormLabel>
+                        <FormLabel className="font-urdu text-right block">آپ کا نام</FormLabel>
                         <FormControl>
                           <Input placeholder="اپنا نام درج کریں" {...field} className="font-urdu text-right" />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="font-urdu text-right" />
                       </FormItem>
                     )}
                   />
@@ -121,11 +122,11 @@ const Sponsor = () => {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-urdu text-right">ای میل</FormLabel>
+                        <FormLabel className="font-urdu text-right block">ای میل</FormLabel>
                         <FormControl>
                           <Input type="email" placeholder="اپنی ای میل درج کریں" {...field} className="font-urdu text-right" />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="font-urdu text-right" />
                       </FormItem>
                     )}
                   />
@@ -135,11 +136,11 @@ const Sponsor = () => {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-urdu text-right">فون نمبر</FormLabel>
+                        <FormLabel className="font-urdu text-right block">فون نمبر</FormLabel>
                         <FormControl>
                           <Input placeholder="اپنا فون نمبر درج کریں" {...field} className="font-urdu text-right" />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="font-urdu text-right" />
                       </FormItem>
                     )}
                   />
@@ -149,7 +150,7 @@ const Sponsor = () => {
                     name="fundType"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-urdu text-right">فنڈ کی قسم</FormLabel>
+                        <FormLabel className="font-urdu text-right block">فنڈ کی قسم</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger className="font-urdu text-right">
@@ -158,7 +159,7 @@ const Sponsor = () => {
                           </FormControl>
                           <SelectContent>
                             {fundTypes.map((type) => (
-                              <SelectItem key={type.id} value={type.id}>
+                              <SelectItem key={type.id} value={type.id} className="font-urdu text-right">
                                 {type.name}
                               </SelectItem>
                             ))}
@@ -167,7 +168,7 @@ const Sponsor = () => {
                         <FormDescription className="font-urdu text-right">
                           وہ فنڈ منتخب کریں جسے آپ اسپانسر کرنا چاہتے ہیں۔
                         </FormDescription>
-                        <FormMessage />
+                        <FormMessage className="font-urdu text-right" />
                       </FormItem>
                     )}
                   />
@@ -177,17 +178,21 @@ const Sponsor = () => {
                     name="amount"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-urdu text-right">اسپانسرشپ کی رقم (PKR)</FormLabel>
+                        <FormLabel className="font-urdu text-right block">اسپانسرشپ کی رقم (PKR)</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="رقم درج کریں" {...field} className="font-urdu text-right" />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="font-urdu text-right" />
                       </FormItem>
                     )}
                   />
                   
-                  <Button type="submit" className="w-full font-urdu" disabled={isSubmitting}>
-                    {isSubmitting ? "پروسیسنگ..." : "اسپانسرشپ جمع کروائیں"}
+                  <Button 
+                    type="submit" 
+                    className="w-full font-urdu bg-gradient-primary hover:opacity-90" 
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "...پروسیسنگ" : "اسپانسرشپ جمع کروائیں"}
                   </Button>
                 </form>
               </Form>

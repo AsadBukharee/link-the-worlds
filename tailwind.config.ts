@@ -59,7 +59,12 @@ export default {
       },
       backgroundImage: {
         'gradient-primary': 'linear-gradient(to right, #8F62D5, #7091E7)',
+        'gradient-secondary': 'linear-gradient(to right, #F1AC00, #F7C782)',
         'gradient-card': 'linear-gradient(to bottom right, #FFFFFF, #ECE8F6)',
+      },
+      boxShadow: {
+        'dual-color': '0 4px 20px -2px rgba(143, 98, 213, 0.3), 2px 6px 20px -4px rgba(112, 145, 231, 0.4)',
+        'dual-hover': '0 8px 25px -1px rgba(143, 98, 213, 0.4), 2px 10px 25px -3px rgba(112, 145, 231, 0.5)',
       },
       borderRadius: {
         lg: 'var(--radius)',

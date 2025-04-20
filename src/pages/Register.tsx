@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -12,15 +13,15 @@ import registrationAnimation from "../assets/animations/registration.json";
 
 const formSchema = z.object({
   fullName: z.string().min(2, {
-    message: "Full name must be at least 2 characters.",
+    message: "پورا نام کم از کم 2 حروف کا ہونا چاہیے۔",
   }),
   phone: z.string().min(10, {
-    message: "Phone number must be at least 10 digits.",
+    message: "فون نمبر کم از کم 10 ہندسوں کا ہونا چاہیے۔",
   }),
   cnic: z.string().min(13, {
-    message: "CNIC must be 13 digits without dashes.",
+    message: "شناختی کارڈ نمبر 13 ہندسوں کا ہونا چاہیے (بغیر ڈیش کے)۔",
   }).max(13, {
-    message: "CNIC must be 13 digits without dashes.",
+    message: "شناختی کارڈ نمبر 13 ہندسوں کا ہونا چاہیے (بغیر ڈیش کے)۔",
   }),
 });
 
@@ -42,8 +43,8 @@ const Register = () => {
     // Simulate API call
     setTimeout(() => {
       toast({
-        title: "Registration Successful",
-        description: "You have been registered to the Flahi Gaon community.",
+        title: "رجسٹریشن کامیاب",
+        description: "آپ فلاحی گاؤں کمیونٹی میں رجسٹر ہو چکے ہیں۔",
       });
       setIsSubmitting(false);
       form.reset();
@@ -57,7 +58,7 @@ const Register = () => {
           <Lottie animationData={registrationAnimation} loop={true} />
         </div>
         
-        <Card className="backdrop-blur-sm bg-gradient-card">
+        <Card className="shadow-dual-color hover:shadow-dual-hover transition-shadow border-none bg-gradient-card">
           <CardHeader>
             <CardTitle className="font-urdu text-right">اپنے آپ کو رجسٹر کریں</CardTitle>
             <CardDescription className="font-urdu text-right">
@@ -72,11 +73,11 @@ const Register = () => {
                   name="fullName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Full Name</FormLabel>
+                      <FormLabel className="font-urdu text-right block">پورا نام</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your full name" {...field} />
+                        <Input placeholder="اپنا پورا نام درج کریں" {...field} className="font-urdu text-right" />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="font-urdu text-right" />
                     </FormItem>
                   )}
                 />
@@ -86,14 +87,14 @@ const Register = () => {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
+                      <FormLabel className="font-urdu text-right block">فون نمبر</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your phone number" {...field} />
+                        <Input placeholder="اپنا فون نمبر درج کریں" {...field} className="font-urdu text-right" />
                       </FormControl>
-                      <FormDescription>
-                        Format: 03001234567 (without spaces or dashes)
+                      <FormDescription className="font-urdu text-right">
+                        فارمیٹ: 03001234567 (بغیر خالی جگہ یا ڈیش کے)
                       </FormDescription>
-                      <FormMessage />
+                      <FormMessage className="font-urdu text-right" />
                     </FormItem>
                   )}
                 />
@@ -103,20 +104,24 @@ const Register = () => {
                   name="cnic"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>CNIC</FormLabel>
+                      <FormLabel className="font-urdu text-right block">شناختی کارڈ نمبر</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your CNIC" {...field} />
+                        <Input placeholder="اپنا شناختی کارڈ نمبر درج کریں" {...field} className="font-urdu text-right" />
                       </FormControl>
-                      <FormDescription>
-                        13 digits without dashes
+                      <FormDescription className="font-urdu text-right">
+                        13 ہندسے بغیر ڈیش کے
                       </FormDescription>
-                      <FormMessage />
+                      <FormMessage className="font-urdu text-right" />
                     </FormItem>
                   )}
                 />
                 
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? "Registering..." : "Register"}
+                <Button 
+                  type="submit" 
+                  className="w-full font-urdu bg-gradient-primary hover:opacity-90" 
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "...رجسٹریشن" : "رجسٹر کریں"}
                 </Button>
               </form>
             </Form>

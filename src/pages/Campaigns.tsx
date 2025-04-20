@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -94,7 +95,7 @@ const Campaigns = () => {
         {campaigns.map((campaign) => (
           <Card 
             key={campaign.id} 
-            className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-gradient-card border-none"
+            className="overflow-hidden transition-all duration-300 shadow-dual-color hover:shadow-dual-hover border-none"
           >
             <div className="h-48 overflow-hidden relative">
               <img 
@@ -151,7 +152,7 @@ const Campaigns = () => {
             </CardContent>
             
             <CardFooter className="flex gap-4">
-              <Button asChild variant="secondary" className="flex-1 text-lg">
+              <Button asChild variant="secondary" className="flex-1 text-lg bg-gradient-secondary hover:opacity-90">
                 <Link to={`/campaigns/${campaign.id}`}>تفصیلات دیکھیں</Link>
               </Button>
               <Button asChild className="flex-1 text-lg bg-gradient-primary hover:opacity-90">

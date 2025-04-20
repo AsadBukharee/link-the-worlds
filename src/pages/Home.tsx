@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,6 +8,10 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { getRecentPosts } from "@/services/postService";
 import { Post } from "@/types/post";
 import NewsCard from "@/components/NewsCard";
+import Lottie from "lottie-react";
+import registrationAnimation from "../assets/animations/registration.json";
+import donateAnimation from "../assets/animations/donate.json";
+import sponsorAnimation from "../assets/animations/sponsor.json";
 
 const Home = () => {
   const [recentNews, setRecentNews] = useState<Post[]>([]);
@@ -20,13 +25,13 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-10">
-      {/* Hero Carousel Section */}
-      <section className="mb-20">
-        <Carousel className="w-full max-w-6xl mx-auto">
+    <div className="min-h-screen bg-muted/30">
+      {/* Hero Carousel Section - Full Width */}
+      <section className="mb-10 w-full">
+        <Carousel className="w-full">
           <CarouselContent>
             <CarouselItem>
-              <div className="relative h-[400px] w-full overflow-hidden rounded-xl">
+              <div className="relative h-[400px] w-full overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81" 
                   alt="Community" 
@@ -34,14 +39,14 @@ const Home = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
                   <div className="text-white max-w-xl">
-                    <h1 className="text-4xl md:text-6xl font-bold mb-4">ہمارا64</h1>
-                    <p className="text-xl md:text-2xl mb-8">Let's Make Our Village a Paradise</p>
+                    <h1 className="text-4xl md:text-6xl font-bold mb-4 font-urdu">ہمارا64</h1>
+                    <p className="text-xl md:text-2xl mb-8 font-urdu">آئیے اپنے گاؤں کو جنت بنائیں</p>
                     <div className="flex flex-wrap gap-4">
-                      <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-                        <Link to="/register">Register Yourself</Link>
+                      <Button asChild size="lg" className="bg-gradient-primary hover:opacity-90">
+                        <Link to="/register" className="font-urdu">رجسٹر کریں</Link>
                       </Button>
                       <Button asChild variant="outline" size="lg" className="bg-white/10 backdrop-blur-sm hover:bg-white/20">
-                        <Link to="/donate">Donate Now</Link>
+                        <Link to="/donate" className="font-urdu">عطیہ دیں</Link>
                       </Button>
                     </div>
                   </div>
@@ -49,7 +54,7 @@ const Home = () => {
               </div>
             </CarouselItem>
             <CarouselItem>
-              <div className="relative h-[400px] w-full overflow-hidden rounded-xl">
+              <div className="relative h-[400px] w-full overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" 
                   alt="Technology" 
@@ -57,14 +62,14 @@ const Home = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
                   <div className="text-white max-w-xl">
-                    <h2 className="text-4xl md:text-6xl font-bold mb-4">Building Together</h2>
-                    <p className="text-xl md:text-2xl mb-8">Join us in creating a better future</p>
+                    <h2 className="text-4xl md:text-6xl font-bold mb-4 font-urdu">ایک ساتھ تعمیر کریں</h2>
+                    <p className="text-xl md:text-2xl mb-8 font-urdu">بہتر مستقبل بنانے میں ہمارے ساتھ شامل ہوں</p>
                   </div>
                 </div>
               </div>
             </CarouselItem>
             <CarouselItem>
-              <div className="relative h-[400px] w-full overflow-hidden rounded-xl">
+              <div className="relative h-[400px] w-full overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
                   alt="Education" 
@@ -72,8 +77,8 @@ const Home = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
                   <div className="text-white max-w-xl">
-                    <h2 className="text-4xl md:text-6xl font-bold mb-4">Empowering Education</h2>
-                    <p className="text-xl md:text-2xl mb-8">Supporting our future generations</p>
+                    <h2 className="text-4xl md:text-6xl font-bold mb-4 font-urdu">تعلیم کو بااختیار بنانا</h2>
+                    <p className="text-xl md:text-2xl mb-8 font-urdu">ہماری آنے والی نسلوں کو سہارا دیں</p>
                   </div>
                 </div>
               </div>
@@ -84,79 +89,81 @@ const Home = () => {
         </Carousel>
       </section>
 
-      {/* Features Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
-        
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader>
-            <User className="h-10 w-10 text-primary mb-2" />
-            <CardTitle>Register Yourself</CardTitle>
-            <CardDescription>Join our community network</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Register with your phone number and CNIC to join our village community.</p>
-          </CardContent>
-          <CardFooter>
-            <Button asChild variant="secondary" className="w-full">
-              <Link to="/register">Register Now</Link>
-            </Button>
-          </CardFooter>
-        </Card>
+      {/* Features Grid with Left 20% blank and Right 20% promo card */}
+      <section className="container mx-auto px-4 mb-20">
+        <div className="flex flex-col md:flex-row">
+          {/* Left 20% blank space */}
+          <div className="w-full md:w-1/5"></div>
+          
+          {/* Middle 60% with feature cards */}
+          <div className="w-full md:w-3/5 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="shadow-dual-color hover:shadow-dual-hover transition-all duration-300 border-none hover:-translate-y-2">
+              <CardContent className="p-6">
+                <div className="mb-4 h-40 overflow-hidden">
+                  <Lottie animationData={registrationAnimation} loop={true} />
+                </div>
+                <h3 className="text-xl font-bold mb-2 font-urdu text-right">خود کو رجسٹر کریں</h3>
+                <p className="mb-4 font-urdu text-right">اپنے فون نمبر اور CNIC کے ساتھ ہماری گاؤں کمیونٹی میں شامل ہوں۔</p>
+                <Button asChild variant="secondary" className="w-full bg-gradient-secondary hover:opacity-90">
+                  <Link to="/register" className="font-urdu">ابھی رجسٹر کریں</Link>
+                </Button>
+              </CardContent>
+            </Card>
 
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader>
-            <Banknote className="h-10 w-10 text-primary mb-2" />
-            <CardTitle>Donate</CardTitle>
-            <CardDescription>Support our community initiatives</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Contribute to various causes including Zakat, marriage assistance, medical treatment, and construction.</p>
-          </CardContent>
-          <CardFooter>
-            <Button asChild variant="secondary" className="w-full">
-              <Link to="/donate">Donate</Link>
-            </Button>
-          </CardFooter>
-        </Card>
+            <Card className="shadow-dual-color hover:shadow-dual-hover transition-all duration-300 border-none hover:-translate-y-2">
+              <CardContent className="p-6">
+                <div className="mb-4 h-40 overflow-hidden">
+                  <Lottie animationData={donateAnimation} loop={true} />
+                </div>
+                <h3 className="text-xl font-bold mb-2 font-urdu text-right">عطیہ دیں</h3>
+                <p className="mb-4 font-urdu text-right">زکوٰۃ، شادی کی مدد، طبی علاج، تعمیر اور دیگر مقاصد کے لیے عطیہ دیں۔</p>
+                <Button asChild variant="secondary" className="w-full bg-gradient-secondary hover:opacity-90">
+                  <Link to="/donate" className="font-urdu">عطیہ دیں</Link>
+                </Button>
+              </CardContent>
+            </Card>
 
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader>
-            <Building className="h-10 w-10 text-primary mb-2" />
-            <CardTitle>Sponsor Fund</CardTitle>
-            <CardDescription>Support specific community funds</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Sponsor various funds like Imam Masjid or Educational Fund to support specific community needs.</p>
-          </CardContent>
-          <CardFooter>
-            <Button asChild variant="secondary" className="w-full">
-              <Link to="/sponsor">Sponsor</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-
-        <Card className="hover:shadow-lg transition-shadow md:col-span-2 lg:col-span-3 bg-gradient-to-r from-primary/5 to-primary/10">
-          <CardHeader>
-            <Calendar className="h-10 w-10 text-primary mb-2" />
-            <CardTitle>Ongoing Campaigns</CardTitle>
-            <CardDescription>See what's happening in our community</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Check out the various campaigns that are currently active in our community and how you can contribute to them.</p>
-          </CardContent>
-          <CardFooter>
-            <Button asChild variant="secondary" className="w-full">
-              <Link to="/campaigns">View Campaigns</Link>
-            </Button>
-          </CardFooter>
-        </Card>
+            <Card className="shadow-dual-color hover:shadow-dual-hover transition-all duration-300 border-none hover:-translate-y-2">
+              <CardContent className="p-6">
+                <div className="mb-4 h-40 overflow-hidden">
+                  <Lottie animationData={sponsorAnimation} loop={true} />
+                </div>
+                <h3 className="text-xl font-bold mb-2 font-urdu text-right">فنڈ اسپانسر کریں</h3>
+                <p className="mb-4 font-urdu text-right">امام مسجد یا تعلیمی فنڈ جیسے مخصوص فنڈز کو سپانسر کریں۔</p>
+                <Button asChild variant="secondary" className="w-full bg-gradient-secondary hover:opacity-90">
+                  <Link to="/sponsor" className="font-urdu">اسپانسر کریں</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+          
+          {/* Right 20% with promo card */}
+          <div className="w-full md:w-1/5 px-4 mt-6 md:mt-0">
+            <Card className="shadow-dual-color h-full border-none bg-gradient-to-br from-primary/10 to-secondary/10 overflow-hidden">
+              <CardContent className="p-4 flex flex-col h-full">
+                <div className="mb-4 overflow-hidden rounded-md">
+                  <img 
+                    src="https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?auto=format&fit=crop&q=80" 
+                    alt="Promotion" 
+                    className="w-full h-48 object-cover"
+                  />
+                </div>
+                <h3 className="text-lg font-bold mb-2 font-urdu text-right">مہمات میں شامل ہوں</h3>
+                <p className="mb-4 font-urdu text-right text-sm">ہماری تازہ ترین مہمات دیکھیں اور ہماری کمیونٹی کی ترقی میں حصہ ڈالیں۔</p>
+                <Button asChild variant="outline" className="mt-auto w-full font-urdu">
+                  <Link to="/campaigns">مہمات دیکھیں</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </section>
 
       {/* News Feed Section */}
-      <section className="mb-20">
+      <section className="container mx-auto px-4 mb-20">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold mb-2">Latest Updates</h2>
-          <p className="text-muted-foreground">Stay informed with our village news</p>
+          <h2 className="text-3xl font-bold mb-2 bg-gradient-primary text-transparent bg-clip-text font-urdu">تازہ ترین خبریں</h2>
+          <p className="text-muted-foreground font-urdu">ہمارے گاؤں کی خبروں سے آگاہ رہیں</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -166,62 +173,52 @@ const Home = () => {
         </div>
 
         <div className="text-center">
-          <Button asChild variant="outline" size="lg">
-            <Link to="/news">See All News</Link>
+          <Button asChild variant="outline" size="lg" className="font-urdu">
+            <Link to="/news">تمام خبریں دیکھیں</Link>
           </Button>
         </div>
       </section>
 
       {/* About Preview Section */}
-      <section className="mb-20">
+      <section className="container mx-auto px-4 mb-20">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold mb-2">About Flahi Gaon</h2>
-          <p className="text-muted-foreground">Learn more about our beautiful village</p>
+          <h2 className="text-3xl font-bold mb-2 bg-gradient-primary text-transparent bg-clip-text font-urdu">فلاحی گاؤں کے بارے میں</h2>
+          <p className="text-muted-foreground font-urdu">ہمارے خوبصورت گاؤں کے بارے میں مزید جانیں</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle>Famous Personalities</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Discover notable individuals who have contributed to our village's legacy.</p>
+          <Card className="shadow-dual-color hover:shadow-dual-hover transition-all duration-300 border-none hover:-translate-y-2">
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2 font-urdu text-right">مشہور شخصیات</h3>
+              <p className="font-urdu text-right">ہمارے گاؤں کی میراث میں حصہ ڈالنے والے نمایاں افراد کے بارے میں جانیں۔</p>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle>Pride of the Village</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Learn about our martyrs and figures who have brought honor to Flahi Gaon.</p>
+          <Card className="shadow-dual-color hover:shadow-dual-hover transition-all duration-300 border-none hover:-translate-y-2">
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2 font-urdu text-right">گاؤں کا فخر</h3>
+              <p className="font-urdu text-right">ہمارے شہداء اور ان شخصیات کے بارے میں جانیں جنہوں نے ہمارے گاؤں کو عزت دلائی ہے۔</p>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <Leaf className="h-6 w-6 text-primary mb-2" />
-              <CardTitle>Agricultural Highlights</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Explore our prominent crops like Wheat, Cotton, Mustard, Oranges, and more.</p>
+          <Card className="shadow-dual-color hover:shadow-dual-hover transition-all duration-300 border-none hover:-translate-y-2">
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2 font-urdu text-right">زراعتی اہمیت</h3>
+              <p className="font-urdu text-right">ہماری اہم فصلوں جیسے گندم، کپاس، سرسوں، مالٹے وغیرہ کے بارے میں جانیں۔</p>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <Building className="h-6 w-6 text-primary mb-2" />
-              <CardTitle>Local Businesses</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Support local businesses that contribute to our village economy.</p>
+          <Card className="shadow-dual-color hover:shadow-dual-hover transition-all duration-300 border-none hover:-translate-y-2">
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2 font-urdu text-right">مقامی کاروبار</h3>
+              <p className="font-urdu text-right">ان مقامی کاروباروں کی حمایت کریں جو ہمارے گاؤں کی معیشت میں حصہ ڈالتے ہیں۔</p>
             </CardContent>
           </Card>
         </div>
 
         <div className="text-center mt-8">
-          <Button asChild variant="outline">
-            <Link to="/about">Learn More About Us</Link>
+          <Button asChild variant="outline" className="font-urdu">
+            <Link to="/about">ہمارے بارے میں مزید جانیں</Link>
           </Button>
         </div>
       </section>
