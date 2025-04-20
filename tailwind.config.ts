@@ -55,7 +55,7 @@ export default {
         }
       },
       fontFamily: {
-        urdu: ['Noto Nastaliq Urdu', 'serif'],
+        urdu: ['Jameel Noori Nastaleeq', 'serif'],
       },
       backgroundImage: {
         'gradient-primary': 'linear-gradient(to right, #8F62D5, #7091E7)',
@@ -84,3 +84,4 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+
