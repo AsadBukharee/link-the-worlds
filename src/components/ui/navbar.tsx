@@ -12,7 +12,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-primary/90 via-primary to-primary/90 text-primary-foreground shadow-lg">
+    <nav className="bg-gradient-to-r from-[#8F62D5] via-[#7091E7] to-[#546DC1] text-white shadow-lg font-urdu">
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           <Link to="/" className="text-2xl font-bold hover:text-secondary transition-colors">ہمارا64</Link>
@@ -20,32 +20,34 @@ const Navbar = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden text-primary-foreground hover:text-secondary transition-colors"
+            className="md:hidden text-white hover:text-secondary transition-colors"
             onClick={toggleMenu}
           >
             {isOpen ? <X /> : <Menu />}
           </Button>
           
           <div className="hidden md:flex space-x-8">
-            <Link to="/" className="hover:text-secondary transition-colors">Home</Link>
-            <Link to="/campaigns" className="hover:text-secondary transition-colors">Campaigns</Link>
-            <Link to="/news" className="hover:text-secondary transition-colors">News</Link>
-            <Link to="/blog" className="hover:text-secondary transition-colors">Blog</Link>
-            <Link to="/about" className="hover:text-secondary transition-colors">About</Link>
-            <Link to="/donate" className="hover:text-secondary transition-colors">Donate</Link>
-            <Link to="/register" className="hover:text-secondary transition-colors">Register</Link>
+            <Link to="/" className="hover:text-secondary transition-colors">ہوم</Link>
+            <Link to="/campaigns" className="hover:text-secondary transition-colors">مہمات</Link>
+            <Link to="/problems" className="hover:text-secondary transition-colors">مسائل</Link>
+            <Link to="/news" className="hover:text-secondary transition-colors">خبریں</Link>
+            <Link to="/blog" className="hover:text-secondary transition-colors">بلاگ</Link>
+            <Link to="/about" className="hover:text-secondary transition-colors">ہمارے بارے میں</Link>
+            <Link to="/donate" className="hover:text-secondary transition-colors">عطیہ</Link>
+            <Link to="/register" className="hover:text-secondary transition-colors">رجسٹر</Link>
           </div>
           
           {isOpen && (
-            <div className="absolute top-16 left-0 right-0 bg-primary/95 backdrop-blur-sm z-50 md:hidden border-t border-primary-foreground/10">
+            <div className="absolute top-16 left-0 right-0 bg-[#8F62D5]/95 backdrop-blur-sm z-50 md:hidden border-t border-white/10">
               <div className="flex flex-col p-4 space-y-4">
-                <Link to="/" className="hover:text-secondary transition-colors" onClick={toggleMenu}>Home</Link>
-                <Link to="/campaigns" className="hover:text-secondary transition-colors" onClick={toggleMenu}>Campaigns</Link>
-                <Link to="/news" className="hover:text-secondary transition-colors" onClick={toggleMenu}>News</Link>
-                <Link to="/blog" className="hover:text-secondary transition-colors" onClick={toggleMenu}>Blog</Link>
-                <Link to="/about" className="hover:text-secondary transition-colors" onClick={toggleMenu}>About</Link>
-                <Link to="/donate" className="hover:text-secondary transition-colors" onClick={toggleMenu}>Donate</Link>
-                <Link to="/register" className="hover:text-secondary transition-colors" onClick={toggleMenu}>Register</Link>
+                <Link to="/" className="hover:text-secondary transition-colors" onClick={toggleMenu}>ہوم</Link>
+                <Link to="/campaigns" className="hover:text-secondary transition-colors" onClick={toggleMenu}>مہمات</Link>
+                <Link to="/problems" className="hover:text-secondary transition-colors" onClick={toggleMenu}>مسائل</Link>
+                <Link to="/news" className="hover:text-secondary transition-colors" onClick={toggleMenu}>خبریں</Link>
+                <Link to="/blog" className="hover:text-secondary transition-colors" onClick={toggleMenu}>بلاگ</Link>
+                <Link to="/about" className="hover:text-secondary transition-colors" onClick={toggleMenu}>ہمارے بارے میں</Link>
+                <Link to="/donate" className="hover:text-secondary transition-colors" onClick={toggleMenu}>عطیہ</Link>
+                <Link to="/register" className="hover:text-secondary transition-colors" onClick={toggleMenu}>رجسٹر</Link>
               </div>
             </div>
           )}

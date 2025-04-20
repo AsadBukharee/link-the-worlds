@@ -14,6 +14,7 @@ import CampaignDetail from "@/pages/CampaignDetail";
 import About from "@/pages/About";
 import News from "@/pages/News";
 import Blog from "@/pages/Blog";
+import Problems from "@/pages/Problems";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/sponsor" element={<Sponsor />} />
             <Route path="/campaigns" element={<Campaigns />} />
             <Route path="/campaigns/:id" element={<CampaignDetail />} />
+            <Route path="/problems" element={<Problems />} />
             <Route path="/about" element={<About />} />
             <Route path="/news" element={<News />} />
             <Route path="/blog" element={<Blog />} />

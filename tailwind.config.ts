@@ -26,7 +26,7 @@ export default {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: '#89007C',
+          DEFAULT: '#8F62D5',
           foreground: '#FFFFFF'
         },
         secondary: {
@@ -58,13 +58,22 @@ export default {
         urdu: ['Noto Nastaliq Urdu', 'serif'],
       },
       backgroundImage: {
-        'gradient-primary': 'linear-gradient(to right, #89007C, #EA4D4D)',
+        'gradient-primary': 'linear-gradient(to right, #8F62D5, #7091E7)',
         'gradient-card': 'linear-gradient(to bottom right, #FFFFFF, #ECE8F6)',
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)'
+      },
+      keyframes: {
+        "card-hover": {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-8px)" }
+        }
+      },
+      animation: {
+        "card-hover": "card-hover 0.3s ease forwards"
       }
     }
   },
