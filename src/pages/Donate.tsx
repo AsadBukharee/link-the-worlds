@@ -1,8 +1,9 @@
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
+import Lottie from "lottie-react";
+import donateAnimation from "../assets/animations/donate.json";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -69,8 +70,11 @@ const Donate = () => {
     <div className="container mx-auto px-4 py-10">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold mb-2">Make a Donation</h1>
-          <p className="text-muted-foreground">Support our community initiatives</p>
+          <div className="mb-8 w-64 mx-auto">
+            <Lottie animationData={donateAnimation} loop={true} />
+          </div>
+          <h1 className="text-3xl font-bold mb-2 font-urdu">عطیہ دیں</h1>
+          <p className="text-muted-foreground font-urdu">ہماری کمیونٹی کی مدد کریں</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

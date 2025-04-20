@@ -1,13 +1,14 @@
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
+import Lottie from "lottie-react";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import registrationAnimation from "../assets/animations/registration.json";
 
 const formSchema = z.object({
   fullName: z.string().min(2, {
@@ -52,11 +53,15 @@ const Register = () => {
   return (
     <div className="container mx-auto px-4 py-10">
       <div className="max-w-md mx-auto">
-        <Card>
+        <div className="mb-8 w-64 mx-auto">
+          <Lottie animationData={registrationAnimation} loop={true} />
+        </div>
+        
+        <Card className="backdrop-blur-sm bg-gradient-card">
           <CardHeader>
-            <CardTitle>Register Yourself</CardTitle>
-            <CardDescription>
-              Join our village community by providing your details.
+            <CardTitle className="font-urdu text-right">اپنے آپ کو رجسٹر کریں</CardTitle>
+            <CardDescription className="font-urdu text-right">
+              اپنی تفصیلات فراہم کر کے ہماری گاؤں کی کمیونٹی میں شامل ہوں۔
             </CardDescription>
           </CardHeader>
           <CardContent>

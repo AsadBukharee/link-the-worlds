@@ -1,4 +1,5 @@
-
+import Lottie from "lottie-react";
+import sponsorAnimation from "../assets/animations/sponsor.json";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -68,8 +69,11 @@ const Sponsor = () => {
     <div className="container mx-auto px-4 py-10">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold mb-2">Sponsor a Fund</h1>
-          <p className="text-muted-foreground">Support specific community initiatives</p>
+          <div className="mb-8 w-64 mx-auto">
+            <Lottie animationData={sponsorAnimation} loop={true} />
+          </div>
+          <h1 className="text-3xl font-bold mb-2 font-urdu">فنڈ اسپانسر کریں</h1>
+          <p className="text-muted-foreground font-urdu">مخصوص کمیونٹی اقدامات کی حمایت کریں</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -88,11 +92,11 @@ const Sponsor = () => {
             </ul>
           </div>
 
-          <Card>
+          <Card className="backdrop-blur-sm bg-gradient-card">
             <CardHeader>
-              <CardTitle>Sponsorship Form</CardTitle>
-              <CardDescription>
-                Please fill in your sponsorship details
+              <CardTitle className="font-urdu text-right">اسپانسرشپ فارم</CardTitle>
+              <CardDescription className="font-urdu text-right">
+                براہ کرم اپنی اسپانسرشپ کی تفصیلات درج کریں۔
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -103,9 +107,9 @@ const Sponsor = () => {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Your Name</FormLabel>
+                        <FormLabel className="font-urdu text-right">آپ کا نام</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter your name" {...field} />
+                          <Input placeholder="اپنا نام درج کریں" {...field} className="font-urdu text-right" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -117,9 +121,9 @@ const Sponsor = () => {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel className="font-urdu text-right">ای میل</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="Enter your email" {...field} />
+                          <Input type="email" placeholder="اپنی ای میل درج کریں" {...field} className="font-urdu text-right" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -131,9 +135,9 @@ const Sponsor = () => {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
+                        <FormLabel className="font-urdu text-right">فون نمبر</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter your phone number" {...field} />
+                          <Input placeholder="اپنا فون نمبر درج کریں" {...field} className="font-urdu text-right" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -145,11 +149,11 @@ const Sponsor = () => {
                     name="fundType"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Fund Type</FormLabel>
+                        <FormLabel className="font-urdu text-right">فنڈ کی قسم</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select fund type" />
+                            <SelectTrigger className="font-urdu text-right">
+                              <SelectValue placeholder="فنڈ کی قسم منتخب کریں" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -160,8 +164,8 @@ const Sponsor = () => {
                             ))}
                           </SelectContent>
                         </Select>
-                        <FormDescription>
-                          Choose the fund you want to sponsor
+                        <FormDescription className="font-urdu text-right">
+                          وہ فنڈ منتخب کریں جسے آپ اسپانسر کرنا چاہتے ہیں۔
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -173,17 +177,17 @@ const Sponsor = () => {
                     name="amount"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Sponsorship Amount (PKR)</FormLabel>
+                        <FormLabel className="font-urdu text-right">اسپانسرشپ کی رقم (PKR)</FormLabel>
                         <FormControl>
-                          <Input type="number" placeholder="Enter amount" {...field} />
+                          <Input type="number" placeholder="رقم درج کریں" {...field} className="font-urdu text-right" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                   
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? "Processing..." : "Submit Sponsorship"}
+                  <Button type="submit" className="w-full font-urdu" disabled={isSubmitting}>
+                    {isSubmitting ? "پروسیسنگ..." : "اسپانسرشپ جمع کروائیں"}
                   </Button>
                 </form>
               </Form>
