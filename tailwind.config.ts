@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -55,7 +54,7 @@ export default {
         }
       },
       fontFamily: {
-        urdu: ['Jameel Noori Nastaleeq', 'serif'],
+        urdu: ['Noto Sans Arabic', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-primary': 'linear-gradient(to right, #8F62D5, #7091E7)',
@@ -84,4 +83,3 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
-
