@@ -19,12 +19,12 @@ const Blog = () => {
   }, []);
 
   if (loading) {
-    return <div className="container mx-auto px-4 py-8">Loading...</div>;
+    return <div className="container mx-auto px-4 py-8 font-urdu">...لوڈ ہو رہا ہے</div>;
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Blog Posts</h1>
+      <h1 className="text-3xl font-bold mb-8 font-urdu">بلاگ پوسٹس</h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {posts.map(post => (
           <NewsCard key={post.id} post={post} />

@@ -54,7 +54,7 @@ export default {
         }
       },
       fontFamily: {
-        urdu: ['Noto Sans Arabic', 'sans-serif'],
+        urdu: ['Noto Nastaliq Urdu', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-primary': 'linear-gradient(to right, #8F62D5, #7091E7)',
