@@ -1,41 +1,51 @@
 
-import { Post } from "@/types/post";
+import { apiClient } from "./apiClient";
+import { API_ENDPOINTS } from "@/config/api";
+import { Post, PostCreateRequest, PostUpdateRequest } from "@/types/api";
 
-const mockPosts: Post[] = [
-  {
-    id: "1",
-    title: "Village Clean-up Drive Success",
-    content: "Our community came together for the annual village clean-up drive. Over 100 volunteers participated in making our village cleaner and greener.",
-    author: "Admin",
-    date: "2025-04-19",
-    imageUrl: "https://images.unsplash.com/photo-1532954751162-5b35d427a3b6"
+export const postService = {
+  // Get all posts
+  async getAllPosts(): Promise<Post[]> {
+    return await apiClient.get<Post[]>(API_ENDPOINTS.POSTS);
   },
-  {
-    id: "2",
-    title: "New School Building Progress",
-    content: "Construction of our new school building is progressing well. The foundation has been laid and we expect completion by year end.",
-    author: "Project Manager",
-    date: "2025-04-18",
-    imageUrl: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6"
+
+  // Get recent posts
+  async getRecentPosts(): Promise<Post[]> {
+    return await apiClient.get<Post[]>(API_ENDPOINTS.RECENT_POSTS);
   },
-  {
-    id: "3",
-    title: "Agricultural Workshop Announcement",
-    content: "Join us for a workshop on modern farming techniques this weekend. Expert farmers will share their knowledge.",
-    author: "Events Team",
-    date: "2025-04-17",
-    imageUrl: "https://images.unsplash.com/photo-1589923158776-cb4485d99fd6"
+
+  // Get post by ID
+  async getPostById(postId: number): Promise<Post> {
+    return await apiClient.get<Post>(API_ENDPOINTS.POST_DETAIL(postId));
+  },
+
+  // Create a new post
+  async createPost(postData: PostCreateRequest): Promise<Post> {
+    return await apiClient.post<Post>(
+      API_ENDPOINTS.POSTS, 
+      postData, 
+      true
+    );
+  },
+
+  // Update a post
+  async updatePost(postId: number, postData: PostUpdateRequest): Promise<Post> {
+    return await apiClient.put<Post>(
+      API_ENDPOINTS.POST_DETAIL(postId), 
+      postData, 
+      true
+    );
+  },
+
+  // Delete a post
+  async deletePost(postId: number): Promise<void> {
+    await apiClient.delete(API_ENDPOINTS.POST_DETAIL(postId), true);
+  },
+
+  // Get posts by date range
+  async getPostsByDateRange(startDate: string, endDate: string): Promise<Post[]> {
+    return await apiClient.get<Post[]>(
+      `${API_ENDPOINTS.POSTS_BY_DATE}?start_date=${startDate}&end_date=${endDate}`
+    );
   }
-];
-
-export const getRecentPosts = () => {
-  return Promise.resolve(mockPosts);
-};
-
-export const getPostsByDateRange = (startDate: Date, endDate: Date) => {
-  const filteredPosts = mockPosts.filter(post => {
-    const postDate = new Date(post.date);
-    return postDate >= startDate && postDate <= endDate;
-  });
-  return Promise.resolve(filteredPosts);
 };

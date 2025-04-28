@@ -10,10 +10,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import registrationAnimation from "../assets/animations/registration.json";
+import { useAuth } from "@/contexts/AuthContext";
 
 const formSchema = z.object({
   fullName: z.string().min(2, {
     message: "پورا نام کم از کم 2 حروف کا ہونا چاہیے۔",
+  }),
+  username: z.string().min(3, {
+    message: "صارف کا نام کم از کم 3 حروف کا ہونا چاہیے۔",
+  }),
+  email: z.string().email({
+    message: "برائے مہربانی ایک درست ای میل ایڈریس درج کریں۔",
   }),
   phone: z.string().min(10, {
     message: "فون نمبر کم از کم 10 ہندسوں کا ہونا چاہیے۔",
@@ -23,32 +30,53 @@ const formSchema = z.object({
   }).max(13, {
     message: "شناختی کارڈ نمبر 13 ہندسوں کا ہونا چاہیے (بغیر ڈیش کے)۔",
   }),
+  password: z.string().min(6, {
+    message: "پاس ورڈ کم از کم 6 حروف کا ہونا چاہیے۔",
+  }),
 });
 
 const Register = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { register: authRegister } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: "",
+      username: "",
+      email: "",
       phone: "",
       cnic: "",
+      password: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setIsSubmitting(true);
+      await authRegister(
+        values.username,
+        values.email,
+        values.password,
+        values.phone,
+        values.cnic
+      );
+      
       toast({
         title: "رجسٹریشن کامیاب",
         description: "آپ فلاحی گاؤں کمیونٹی میں رجسٹر ہو چکے ہیں۔",
       });
-      setIsSubmitting(false);
       form.reset();
-    }, 1500);
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast({
+        title: "رجسٹریشن ناکام",
+        description: "رجسٹریشن کے دوران ایک مسئلہ پیش آیا۔ براہ کرم دوبارہ کوشش کریں۔",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -84,6 +112,34 @@ const Register = () => {
                 
                 <FormField
                   control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-urdu text-right block">صارف کا نام</FormLabel>
+                      <FormControl>
+                        <Input placeholder="اپنا صارف نام درج کریں" {...field} className="font-urdu text-right" />
+                      </FormControl>
+                      <FormMessage className="font-urdu text-right" />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-urdu text-right block">ای میل</FormLabel>
+                      <FormControl>
+                        <Input placeholder="اپنی ای میل درج کریں" {...field} className="font-urdu text-right" />
+                      </FormControl>
+                      <FormMessage className="font-urdu text-right" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
@@ -111,6 +167,20 @@ const Register = () => {
                       <FormDescription className="font-urdu text-right">
                         13 ہندسے بغیر ڈیش کے
                       </FormDescription>
+                      <FormMessage className="font-urdu text-right" />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-urdu text-right block">پاس ورڈ</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="اپنا پاس ورڈ درج کریں" {...field} className="font-urdu text-right" />
+                      </FormControl>
                       <FormMessage className="font-urdu text-right" />
                     </FormItem>
                   )}
