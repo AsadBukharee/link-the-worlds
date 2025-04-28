@@ -11,22 +11,24 @@ import sponsorAnimation from "../assets/animations/sponsor.json";
 const Index = () => {
   return (
     <div className="min-h-screen bg-muted/30 relative">
-      {/* Video Background with Overlay */}
+      {/* Video Background with Overlay - Lower z-index */}
       <div className="fixed inset-0 w-full h-full z-0 overflow-hidden">
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline
-          className="absolute min-w-full min-h-full object-cover top-0 left-0 w-full h-full"
-        >
-          <source src="https://v1.pinimg.com/videos/mc/720p/ba/7f/3f/ba7f3fef36056bdd781f79bd5d2c2cd7.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            className="w-auto min-w-full min-h-full max-w-none object-cover"
+          >
+            <source src="https://v1.pinimg.com/videos/mc/720p/ba/7f/3f/ba7f3fef36056bdd781f79bd5d2c2cd7.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       </div>
       
-      {/* Content over the video background */}
+      {/* Content over the video background with higher z-index */}
       <div className="relative z-10">
         {/* Hero Carousel Section - Full Width */}
         <section className="mb-10 w-full">

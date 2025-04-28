@@ -9,10 +9,20 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="flex flex-col min-h-screen font-urdu relative">
-      <Navbar />
-      <main className="flex-grow relative z-10">{children}</main>
-      <Footer />
+    <div className="flex flex-col min-h-screen font-urdu">
+      {/* Navbar with higher z-index to appear above video */}
+      <div className="relative z-30">
+        <Navbar />
+      </div>
+      
+      {/* Main content */}
+      <main className="flex-grow">{children}</main>
+      
+      {/* Footer with higher z-index to appear above video */}
+      <div className="relative z-30">
+        <Footer />
+      </div>
+      
       <Toaster />
     </div>
   );
