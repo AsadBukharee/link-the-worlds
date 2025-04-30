@@ -42,7 +42,7 @@ const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
         return;
       }
       
-      const updatedProblem = await voteForProblem(problem.id, true);
+      const updatedProblem = await voteForProblem(Number(problem.id));
       if (updatedProblem) {
         onProblemUpdate(updatedProblem);
         toast({
@@ -66,7 +66,7 @@ const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
     
     setIsCommenting(true);
     try {
-      const updatedProblem = await addCommentToProblem(problem.id, {
+      const updatedProblem = await addCommentToProblem(Number(problem.id), {
         author: commentAuthor,
         text: newComment
       });

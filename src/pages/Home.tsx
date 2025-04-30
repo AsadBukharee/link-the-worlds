@@ -5,7 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { postService } from "@/services/postService";
-import { Post } from "@/types/post";
+import { Post as ApiPost } from "@/types/api";
+import { Post as UiPost } from "@/types/post";
 import NewsCard from "@/components/NewsCard";
 import Lottie from "lottie-react";
 import registrationAnimation from "../assets/animations/registration.json";
@@ -13,13 +14,25 @@ import donateAnimation from "../assets/animations/donate.json";
 import sponsorAnimation from "../assets/animations/sponsor.json";
 
 const Home = () => {
-  const [recentNews, setRecentNews] = useState<Post[]>([]);
+  const [recentNews, setRecentNews] = useState<UiPost[]>([]);
+
+  // Convert API Post type to UI Post type
+  const convertToUiPost = (apiPost: ApiPost): UiPost => {
+    return {
+      id: apiPost.id,
+      title: apiPost.title,
+      content: apiPost.content,
+      author: apiPost.author || "Unknown",
+      date: apiPost.created_at || new Date().toISOString(),
+      imageUrl: apiPost.image_url
+    };
+  };
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
         const posts = await postService.getRecentPosts();
-        setRecentNews(posts.slice(0, 3));
+        setRecentNews(posts.map(post => convertToUiPost(post)).slice(0, 3));
       } catch (error) {
         console.error("Error fetching recent posts:", error);
         setRecentNews([]);

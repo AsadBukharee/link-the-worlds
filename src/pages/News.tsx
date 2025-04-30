@@ -1,12 +1,25 @@
 
 import { useEffect, useState } from "react";
-import { Post } from "@/types/post";
+import { Post as ApiPost } from "@/types/api";
+import { Post as UiPost } from "@/types/post";
 import { getPostsByDateRange } from "@/services/postService";
 import NewsCard from "@/components/NewsCard";
 
 const News = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<UiPost[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Convert API Post type to UI Post type
+  const convertToUiPost = (apiPost: ApiPost): UiPost => {
+    return {
+      id: apiPost.id,
+      title: apiPost.title,
+      content: apiPost.content,
+      author: apiPost.author || "Unknown",
+      date: apiPost.created_at || new Date().toISOString(),
+      imageUrl: apiPost.image_url
+    };
+  };
 
   useEffect(() => {
     const fetchRecentPosts = async () => {
@@ -14,8 +27,12 @@ const News = () => {
       const startDate = new Date();
       startDate.setDate(endDate.getDate() - 3);
       
-      const recentPosts = await getPostsByDateRange(startDate, endDate);
-      setPosts(recentPosts);
+      // Format dates as strings for the API
+      const startDateStr = startDate.toISOString().split('T')[0];
+      const endDateStr = endDate.toISOString().split('T')[0];
+      
+      const recentPosts = await getPostsByDateRange(startDateStr, endDateStr);
+      setPosts(recentPosts.map(post => convertToUiPost(post)));
       setLoading(false);
     };
 

@@ -12,6 +12,18 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface RefreshTokenRequest {
+  refresh: string;
+}
+
+export interface UserRegistrationRequest {
+  username: string;
+  email: string;
+  password: string;
+  phone: string;
+  cnic: string;
+}
+
 // User types
 export interface User {
   id: number;
@@ -77,12 +89,18 @@ export interface Problem {
   votes_count?: number;
   comments_count?: number;
   status?: string;
+  has_voted?: boolean;
 }
 
 export interface ProblemCreateRequest {
   title: string;
   description: string;
   image_url?: string;
+}
+
+export interface CommentCreateRequest {
+  author: string;
+  text: string;
 }
 
 export interface Comment {
@@ -105,6 +123,31 @@ export interface Campaign {
   created_at: string;
   updated_at: string;
   status: string;
+}
+
+export interface CampaignDonor {
+  name: string;
+  amount: number;
+  date: string;
+}
+
+export interface CampaignCreateRequest {
+  title: string;
+  description: string;
+  target_amount: number;
+  start_date: string;
+  end_date: string;
+  image_url?: string;
+}
+
+export interface CampaignUpdateRequest {
+  title?: string;
+  description?: string;
+  target_amount?: number;
+  start_date?: string;
+  end_date?: string;
+  image_url?: string;
+  status?: string;
 }
 
 // Donation types

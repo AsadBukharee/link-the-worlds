@@ -35,9 +35,9 @@ const Problems = () => {
       author: apiProblem.author || "Anonymous",
       date: apiProblem.created_at || new Date().toISOString(),
       imageUrl: apiProblem.image_url,
-      votesCount: apiProblem.votes_count || 0,
-      commentsCount: apiProblem.comments_count || 0,
-      status: apiProblem.status || "open"
+      votes: apiProblem.votes_count || 0,
+      comments: [],
+      hasVoted: apiProblem.has_voted || false
     };
   };
 
@@ -151,7 +151,7 @@ const Problems = () => {
             <ProblemCard
               key={problem.id}
               problem={convertToUiProblem(problem)}
-              onUpdate={handleProblemUpdate}
+              onProblemUpdate={handleProblemUpdate}
             />
           ))
         ) : (
