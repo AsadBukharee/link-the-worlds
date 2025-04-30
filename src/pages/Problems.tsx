@@ -8,9 +8,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-import { Problem as ApiProblem } from "@/types/api";
-import { Problem as UiProblem } from "@/types/problem";
+import { useToast } from "@/hooks/use-toast";
+import { Problem, ProblemCreateRequest } from "@/types/api";
 
 const Problems = () => {
   const { toast } = useToast();
@@ -25,21 +24,6 @@ const Problems = () => {
     queryKey: ['problems'],
     queryFn: problemService.getAllProblems
   });
-
-  // Convert API Problem type to UI Problem type
-  const convertToUiProblem = (apiProblem: ApiProblem): UiProblem => {
-    return {
-      id: apiProblem.id.toString(),
-      title: apiProblem.title,
-      description: apiProblem.description,
-      author: apiProblem.author || "Anonymous",
-      date: apiProblem.created_at || new Date().toISOString(),
-      imageUrl: apiProblem.image_url,
-      votes: apiProblem.votes_count || 0,
-      comments: [],
-      hasVoted: apiProblem.has_voted || false
-    };
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,7 +60,7 @@ const Problems = () => {
     }
   };
 
-  const handleProblemUpdate = (updatedProblem: UiProblem) => {
+  const handleProblemUpdate = (updatedProblem: Problem) => {
     // Handle problem updates if needed
     refetch();
   };
@@ -150,8 +134,8 @@ const Problems = () => {
           problems.map(problem => (
             <ProblemCard
               key={problem.id}
-              problem={convertToUiProblem(problem)}
-              onProblemUpdate={handleProblemUpdate}
+              problem={problem}
+              onUpdate={handleProblemUpdate}
             />
           ))
         ) : (

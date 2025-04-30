@@ -125,7 +125,7 @@ export interface Problem {
   // Required by ProblemCard component
   date?: string; // Mapped from created_at
   votes?: number; // Mapped from votes_count
-  comments?: any[]; // Empty array or from API
+  comments?: Comment[]; // Empty array or from API
 }
 
 export interface ProblemCreateRequest {

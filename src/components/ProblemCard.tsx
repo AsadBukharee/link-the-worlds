@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Problem, ProblemVoteResponse } from '@/types/api';
 import { problemService } from '@/services/problemService';
@@ -24,7 +25,7 @@ const ProblemCard = ({ problem, onUpdate }: ProblemCardProps) => {
     
     setIsVoting(true);
     try {
-      const response = await problemService.voteProblem(problem.id);
+      const response = await problemService.voteForProblem(problem.id);
       
       // Create updated problem object with the new votes count
       const updatedProblem: Problem = {
@@ -61,7 +62,7 @@ const ProblemCard = ({ problem, onUpdate }: ProblemCardProps) => {
     
     setIsAddingComment(true);
     try {
-      const comment = await problemService.addComment(problem.id, { text: commentText });
+      const comment = await problemService.addCommentToProblem(problem.id, { text: commentText });
       
       // Create updated problem object with the new comment
       const updatedProblem = {
