@@ -21,7 +21,7 @@ export const convertToUiProblem = (problem: Problem): UiProblem => {
     description: problem.description,
     imageUrl: problem.image_url || "",
     author: problem.author?.full_name || "",
-    authorId: problem.author_id || 0,
+    author_id: problem.author_id || 0, // Changed from authorId to author_id to match API type
     date: problem.created_at || "",
     votes: problem.votes_count || 0,
     hasVoted: problem.has_voted || false,
