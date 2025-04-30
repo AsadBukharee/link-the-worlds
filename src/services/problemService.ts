@@ -1,7 +1,7 @@
 
 import { apiClient } from "./apiClient";
 import { API_ENDPOINTS } from "@/config/api";
-import { CommentCreateRequest, Problem, ProblemComment, ProblemCreateRequest } from "@/types/api";
+import { Problem, ProblemCreateRequest } from "@/types/api";
 
 export const problemService = {
   // Get all problems
@@ -22,25 +22,31 @@ export const problemService = {
       true
     );
   },
-
+  
   // Vote for a problem
-  async voteForProblem(problemId: number): Promise<{ votes: number }> {
-    return await apiClient.post<{ votes: number }>(
-      API_ENDPOINTS.PROBLEM_VOTE(problemId), 
-      {}, 
+  async voteForProblem(problemId: number): Promise<any> {
+    return await apiClient.post<any>(
+      API_ENDPOINTS.PROBLEM_VOTE(problemId),
+      {},
       true
     );
   },
-
-  // Add comment to a problem
-  async addCommentToProblem(
-    problemId: number, 
-    commentData: CommentCreateRequest
-  ): Promise<ProblemComment> {
-    return await apiClient.post<ProblemComment>(
-      API_ENDPOINTS.PROBLEM_COMMENTS(problemId), 
-      commentData, 
+  
+  // Add comment to problem
+  async addCommentToProblem(problemId: number, commentText: string): Promise<any> {
+    return await apiClient.post<any>(
+      API_ENDPOINTS.PROBLEM_COMMENTS(problemId),
+      { text: commentText },
       true
     );
   }
 };
+
+// Export individual functions for direct imports
+export const { 
+  getAllProblems, 
+  getProblemById, 
+  createProblem,
+  voteForProblem,
+  addCommentToProblem
+} = problemService;

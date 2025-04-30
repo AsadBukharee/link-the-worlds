@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { getRecentPosts } from "@/services/postService";
+import { postService } from "@/services/postService";
 import { Post } from "@/types/post";
 import NewsCard from "@/components/NewsCard";
 import Lottie from "lottie-react";
@@ -17,8 +17,13 @@ const Home = () => {
 
   useEffect(() => {
     const fetchNews = async () => {
-      const posts = await getRecentPosts();
-      setRecentNews(posts.slice(0, 3));
+      try {
+        const posts = await postService.getRecentPosts();
+        setRecentNews(posts.slice(0, 3));
+      } catch (error) {
+        console.error("Error fetching recent posts:", error);
+        setRecentNews([]);
+      }
     };
     fetchNews();
   }, []);

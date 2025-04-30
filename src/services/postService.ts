@@ -49,3 +49,14 @@ export const postService = {
     );
   }
 };
+
+// Export individual functions for direct imports
+export const { 
+  getAllPosts, 
+  getRecentPosts, 
+  getPostById, 
+  createPost, 
+  updatePost, 
+  deletePost, 
+  getPostsByDateRange 
+} = postService;
