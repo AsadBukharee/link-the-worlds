@@ -24,6 +24,24 @@ export interface UserRegistrationRequest {
   full_name: string;
 }
 
+// OTP Verification types
+export interface OtpVerificationRequest {
+  phone: string;
+  otp: string;
+}
+
+export interface OtpVerificationResponse {
+  success: boolean;
+  message: string;
+  access?: string;
+  refresh?: string;
+  user?: User;
+}
+
+export interface ResendOtpRequest {
+  phone: string;
+}
+
 // User types
 export interface User {
   id: number;

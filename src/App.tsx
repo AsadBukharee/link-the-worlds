@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Layout from "@/components/Layout";
 import Home from "@/pages/Home";
 import Register from "@/pages/Register";
+import VerifyOtp from "@/pages/VerifyOtp";
 import Login from "@/pages/Login";
 import Donate from "@/pages/Donate";
 import Sponsor from "@/pages/Sponsor";
@@ -32,6 +33,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/verify-otp" element={<VerifyOtp />} />
               <Route path="/login" element={<Login />} />
               <Route path="/donate" element={<Donate />} />
               <Route path="/sponsor" element={<Sponsor />} />

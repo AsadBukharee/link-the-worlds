@@ -1,41 +1,42 @@
 
-import { Post as ApiPost, Problem as ApiProblem, Campaign as ApiCampaign } from "@/types/api";
+import { Post, Problem, Campaign } from "@/types/api";
 import { Post as UiPost } from "@/types/post";
 import { Problem as UiProblem } from "@/types/problem";
 
-// Convert API Post to UI Post
-export const convertToUiPost = (apiPost: ApiPost): UiPost => {
+export const convertToUiPost = (post: Post): UiPost => {
   return {
-    id: apiPost.id,
-    title: apiPost.title,
-    content: apiPost.content,
-    author: typeof apiPost.author === 'object' ? apiPost.author?.phone || "Unknown" : apiPost.author || "Unknown",
-    date: apiPost.created_at || new Date().toISOString(),
-    imageUrl: apiPost.image_url
+    id: post.id.toString(), // Convert to string for consistency
+    title: post.title,
+    content: post.content,
+    image: post.image_url || "",
+    author: post.author || {},
+    authorId: post.author_id || 0,
+    date: post.created_at || "",
+    likes: post.likes_count || 0,
+    shares: post.shares_count || 0
   };
 };
 
-// Convert API Problem to UI Problem
-export const convertToUiProblem = (apiProblem: ApiProblem): UiProblem => {
+export const convertToUiProblem = (problem: Problem): UiProblem => {
   return {
-    id: apiProblem.id,
-    title: apiProblem.title,
-    description: apiProblem.description,
-    date: apiProblem.created_at || new Date().toISOString(),
-    votes: apiProblem.votes_count || 0,
-    comments: [],
-    imageUrl: apiProblem.image_url,
-    author: typeof apiProblem.author === 'object' ? apiProblem.author?.phone || "Unknown" : apiProblem.author || "Unknown",
+    id: problem.id.toString(), // Convert to string for consistency
+    title: problem.title,
+    description: problem.description,
+    image: problem.image_url || "",
+    author: problem.author || {},
+    authorId: problem.author_id || 0,
+    date: problem.created_at || "",
+    votes: problem.votes_count || 0,
+    hasVoted: problem.has_voted || false,
+    comments: problem.comments || []
   };
 };
 
-// Convert API Campaign to UI Campaign (with needed properties for the UI)
-export const convertApiCampaignToUiCampaign = (apiCampaign: ApiCampaign): ApiCampaign => {
+export const convertToCampaignWithDefaults = (campaign: Campaign): Campaign => {
   return {
-    ...apiCampaign,
-    // Map current_amount to collected_amount for UI compatibility
-    collected_amount: apiCampaign.current_amount,
-    // Default donors count if not provided
-    donors: apiCampaign.donors || 0
+    ...campaign,
+    // Provide default values for compatibility with existing components
+    collected_amount: campaign.current_amount,
+    donors: campaign.donors || 0
   };
 };

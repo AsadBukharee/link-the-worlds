@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { User } from "@/types/api";
 import { authService } from "@/services/authService";
@@ -7,10 +8,14 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  registeredPhone: string;
   login: (phone: string, password: string) => Promise<void>;
   register: (phone: string, cnic: string, password: string, fullName: string) => Promise<void>;
+  verifyOtp: (phone: string, otp: string) => Promise<boolean>;
+  resendOtp: (phone: string) => Promise<boolean>;
+  setRegisteredPhone: (phone: string) => void;
   logout: () => void;
-  updateUserData: () => Promise<void>;
+  updateUserData: () => Promise<User | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,6 +23,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [registeredPhone, setRegisteredPhone] = useState<string>("");
 
   // Function to get the current user data
   const updateUserData = async () => {
@@ -74,13 +80,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     try {
       await authService.register({ phone, cnic, password, full_name: fullName });
-      // After registration, login the user
-      await login(phone, password);
+      // After registration, store the phone number to use in OTP verification
+      setRegisteredPhone(phone);
+      // We don't login after registration - instead we'll redirect to OTP verification
     } catch (error) {
       console.error("Registration failed:", error);
       throw error;
     } finally {
       setIsLoading(false);
+    }
+  };
+  
+  const verifyOtp = async (phone: string, otp: string) => {
+    setIsLoading(true);
+    try {
+      const response = await authService.verifyOtp({ phone, otp });
+      
+      if (response.success && response.user) {
+        setUser(response.user);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("OTP verification failed:", error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const resendOtp = async (phone: string) => {
+    try {
+      await authService.resendOtp({ phone });
+      return true;
+    } catch (error) {
+      console.error("Failed to resend OTP:", error);
+      return false;
     }
   };
 
@@ -93,8 +128,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     user,
     isAuthenticated: !!user,
     isLoading,
+    registeredPhone,
     login,
     register,
+    verifyOtp,
+    resendOtp,
+    setRegisteredPhone,
     logout,
     updateUserData
   };

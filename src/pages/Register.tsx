@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -31,7 +32,8 @@ const formSchema = z.object({
 
 const Register = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { register: authRegister } = useAuth();
+  const { register: authRegister, setRegisteredPhone } = useAuth();
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,9 +57,11 @@ const Register = () => {
       
       toast({
         title: "رجسٹریشن کامیاب",
-        description: "آپ فلاحی گاؤں کمیونٹی میں رجسٹر ہو چکے ہیں۔",
+        description: "براہ کرم اپنے فون نمبر پر موصول ہونے والا OTP درج کریں۔",
       });
-      form.reset();
+      
+      // Navigate to OTP verification page
+      navigate("/verify-otp");
     } catch (error) {
       console.error("Registration error:", error);
       toast({

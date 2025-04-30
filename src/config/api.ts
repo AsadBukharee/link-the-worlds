@@ -8,6 +8,8 @@ export const API_ENDPOINTS = {
   
   // Users
   REGISTER_USER: "/users/register/",
+  VERIFY_OTP: "/users/verify-otp/",
+  RESEND_OTP: "/users/resend-otp/",
   USER_DETAIL: (id: number) => `/users/${id}/`,
   USER_ME: "/users/me/", 
   UPLOAD_AVATAR: "/users/upload_avatar/",

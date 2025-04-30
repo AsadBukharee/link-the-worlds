@@ -4,25 +4,27 @@ import { API_ENDPOINTS } from "@/config/api";
 import { FundType, Sponsor, SponsorCreateRequest } from "@/types/api";
 
 export const sponsorService = {
-  // Create a sponsorship
+  // Get all sponsors
+  async getAllSponsors(): Promise<Sponsor[]> {
+    return await apiClient.get<Sponsor[]>(
+      API_ENDPOINTS.SPONSORS, 
+      true
+    );
+  },
+
+  // Create a new sponsor
   async createSponsor(sponsorData: SponsorCreateRequest): Promise<Sponsor> {
     return await apiClient.post<Sponsor>(
-      API_ENDPOINTS.SPONSORS, 
+      API_ENDPOINTS.SPONSORS,
       sponsorData, 
       true
     );
   },
 
-  // Get available fund types
+  // Get all fund types
   async getFundTypes(): Promise<FundType[]> {
-    return await apiClient.get<FundType[]>(API_ENDPOINTS.FUND_TYPES);
-  },
-
-  // Get sponsorship reports (admin only)
-  async getSponsorshipReports(): Promise<any> {
-    return await apiClient.get<any>(
-      API_ENDPOINTS.SPONSORSHIP_REPORTS, 
-      true
+    return await apiClient.get<FundType[]>(
+      API_ENDPOINTS.FUND_TYPES
     );
   }
 };
