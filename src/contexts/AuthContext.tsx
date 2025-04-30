@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { User } from "@/types/api";
 import { authService } from "@/services/authService";
@@ -8,9 +7,10 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (username: string, password: string) => Promise<void>;
-  register: (username: string, email: string, password: string, phone: string, cnic: string) => Promise<void>;
+  login: (phone: string, password: string) => Promise<void>;
+  register: (phone: string, cnic: string, password: string, fullName: string) => Promise<void>;
   logout: () => void;
+  updateUserData: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,19 +19,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Function to get the current user data
+  const updateUserData = async () => {
+    try {
+      if (authService.isAuthenticated()) {
+        const userData = await userService.getCurrentUser();
+        setUser(userData);
+        return userData;
+      }
+    } catch (error) {
+      console.error("Failed to fetch user data:", error);
+      authService.logout();
+      setUser(null);
+    }
+    return null;
+  };
+
   useEffect(() => {
     // Check if user is authenticated on mount
     const checkAuth = async () => {
       try {
-        if (authService.isAuthenticated()) {
-          // For demonstration purposes, we'll use user ID 1
-          // In a real app, you would decode the JWT token to get the user ID
-          const userData = await userService.getUserById(1);
-          setUser(userData);
-        }
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-        authService.logout();
+        await updateUserData();
       } finally {
         setIsLoading(false);
       }
@@ -40,15 +48,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkAuth();
   }, []);
 
-  const login = async (username: string, password: string) => {
+  const login = async (phone: string, password: string) => {
     setIsLoading(true);
     
     try {
-      await authService.login({ username, password });
-      // For demonstration purposes, we'll use user ID 1
-      // In a real app, you would decode the JWT token to get the user ID
-      const userData = await userService.getUserById(1);
-      setUser(userData);
+      const tokenResponse = await authService.login({ phone, password });
+      
+      // If the API returns user data with the token, use it
+      if (tokenResponse.user) {
+        setUser(tokenResponse.user);
+      } else {
+        // Otherwise fetch the user data
+        await updateUserData();
+      }
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
@@ -57,13 +69,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (username: string, email: string, password: string, phone: string, cnic: string) => {
+  const register = async (phone: string, cnic: string, password: string, fullName: string) => {
     setIsLoading(true);
     
     try {
-      await authService.register({ username, email, password, phone, cnic });
+      await authService.register({ phone, cnic, password, full_name: fullName });
       // After registration, login the user
-      await login(username, password);
+      await login(phone, password);
     } catch (error) {
       console.error("Registration failed:", error);
       throw error;
@@ -83,7 +95,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     isLoading,
     login,
     register,
-    logout
+    logout,
+    updateUserData
   };
 
   return (

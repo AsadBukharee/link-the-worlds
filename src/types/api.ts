@@ -5,10 +5,11 @@
 export interface TokenResponse {
   access: string;
   refresh: string;
+  user?: User;
 }
 
 export interface LoginRequest {
-  username: string;
+  phone: string;
   password: string;
 }
 
@@ -17,51 +18,65 @@ export interface RefreshTokenRequest {
 }
 
 export interface UserRegistrationRequest {
-  username: string;
-  email: string;
-  password: string;
   phone: string;
   cnic: string;
+  password: string;
+  full_name: string;
 }
 
 // User types
 export interface User {
   id: number;
-  username: string;
-  email: string;
-  first_name?: string;
-  last_name?: string;
-  phone?: string;
+  phone: string;
   cnic?: string;
-  is_verified?: boolean;
+  email?: string;
+  full_name?: string;
+  date_of_birth?: string;
+  father_name?: string;
+  resident?: boolean;
+  about?: string;
+  tagline?: string;
+  profession?: string;
+  education_level?: string;
+  gender?: string;
+  avatar?: string;
+  cover?: string;
   date_joined?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface UserUpdateRequest {
-  first_name?: string;
-  last_name?: string;
+export interface UserProfileUpdateRequest {
   email?: string;
-  phone?: string;
+  date_of_birth?: string;
+  father_name?: string;
+  resident?: boolean;
+  about?: string;
+  tagline?: string;
+  profession?: string;
+  education_level?: string;
+  gender?: string;
 }
 
 export interface RegisterRequest {
-  username: string;
-  email: string;
-  password: string;
   phone: string;
   cnic: string;
+  password: string;
+  full_name: string;
 }
 
 // Post types
 export interface Post {
-  id: string;
+  id: string | number;
   title: string;
   content: string;
-  author?: string;
+  author?: any;
   author_id?: number;
+  image_url?: string;
   created_at?: string;
   updated_at?: string;
-  image_url?: string;
+  likes_count?: number;
+  shares_count?: number;
 }
 
 export interface PostCreateRequest {
@@ -81,25 +96,34 @@ export interface Problem {
   id: number;
   title: string;
   description: string;
-  author?: string;
+  author?: any;
   author_id?: number;
+  image_url?: string;
   created_at?: string;
   updated_at?: string;
-  image_url?: string;
   votes_count?: number;
-  comments_count?: number;
-  status?: string;
+  only_resident_vote?: boolean;
   has_voted?: boolean;
+  // Required by ProblemCard component
+  date?: string; // Mapped from created_at
+  votes?: number; // Mapped from votes_count
+  comments?: any[]; // Empty array or from API
 }
 
 export interface ProblemCreateRequest {
   title: string;
   description: string;
   image_url?: string;
+  only_resident_vote?: boolean;
+}
+
+export interface ProblemVoteResponse {
+  voted: boolean;
+  votes_count: number;
+  message: string;
 }
 
 export interface CommentCreateRequest {
-  author: string;
   text: string;
 }
 
@@ -123,6 +147,9 @@ export interface Campaign {
   created_at: string;
   updated_at: string;
   status: string;
+  // For compatibility with existing code
+  collected_amount?: number; // Mapped from current_amount
+  donors?: number; // Calculated or provided by API
 }
 
 export interface CampaignDonor {
@@ -195,4 +222,63 @@ export interface FundType {
   id: number;
   name: string;
   description: string;
+}
+
+// Media types
+export interface CarouselItem {
+  id: number;
+  title: string;
+  tagline: string;
+  image_url: string;
+  order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CallToAction {
+  id: number;
+  title: string;
+  text: string;
+  button_text: string;
+  image_url: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface InfoCard {
+  id: number;
+  title: string;
+  text: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Advertisement {
+  id: number;
+  title: string;
+  description: string;
+  image_url: string;
+  link_url: string;
+  expiry_date: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface NewsItem {
+  id: number;
+  title: string;
+  content: string;
+  image_url: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BlogPost {
+  id: number;
+  title: string;
+  content: string;
+  image_url: string;
+  author: any;
+  created_at: string;
+  updated_at: string;
 }

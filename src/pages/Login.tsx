@@ -12,8 +12,8 @@ import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 
 const formSchema = z.object({
-  username: z.string().min(1, {
-    message: "صارف نام درکار ہے۔",
+  phone: z.string().min(10, {
+    message: "فون نمبر درکار ہے۔ کم از کم 10 ہندسے",
   }),
   password: z.string().min(1, {
     message: "پاس ورڈ درکار ہے۔",
@@ -28,7 +28,7 @@ const Login = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      phone: "",
       password: "",
     },
   });
@@ -36,7 +36,7 @@ const Login = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsSubmitting(true);
-      await login(values.username, values.password);
+      await login(values.phone, values.password);
       
       toast({
         title: "لاگ ان کامیاب",
@@ -47,7 +47,7 @@ const Login = () => {
       console.error("Login error:", error);
       toast({
         title: "لاگ ان ناکام",
-        description: "صارف نام یا پاس ورڈ غلط ہے۔",
+        description: "فون نمبر یا پاس ورڈ غلط ہے۔",
         variant: "destructive",
       });
     } finally {
@@ -70,12 +70,12 @@ const Login = () => {
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-urdu text-right block">صارف کا نام</FormLabel>
+                      <FormLabel className="font-urdu text-right block">فون نمبر</FormLabel>
                       <FormControl>
-                        <Input placeholder="اپنا صارف نام درج کریں" {...field} className="font-urdu text-right" />
+                        <Input placeholder="اپنا فون نمبر درج کریں" {...field} className="font-urdu text-right" />
                       </FormControl>
                       <FormMessage className="font-urdu text-right" />
                     </FormItem>

@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from "@/config/api";
 import { LoginRequest, RefreshTokenRequest, TokenResponse, UserRegistrationRequest } from "@/types/api";
 
 export const authService = {
-  // Login user and get tokens
+  // Login user with phone and get tokens
   async login(credentials: LoginRequest): Promise<TokenResponse> {
     const response = await apiClient.post<TokenResponse>(
       API_ENDPOINTS.LOGIN, 
@@ -27,7 +27,7 @@ export const authService = {
     return response;
   },
 
-  // Register a new user
+  // Register a new user with phone, CNIC, and full name
   async register(userData: UserRegistrationRequest): Promise<any> {
     return await apiClient.post(API_ENDPOINTS.REGISTER_USER, userData);
   },

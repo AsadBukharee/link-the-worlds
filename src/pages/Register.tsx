@@ -16,12 +16,6 @@ const formSchema = z.object({
   fullName: z.string().min(2, {
     message: "پورا نام کم از کم 2 حروف کا ہونا چاہیے۔",
   }),
-  username: z.string().min(3, {
-    message: "صارف کا نام کم از کم 3 حروف کا ہونا چاہیے۔",
-  }),
-  email: z.string().email({
-    message: "برائے مہربانی ایک درست ای میل ایڈریس درج کریں۔",
-  }),
   phone: z.string().min(10, {
     message: "فون نمبر کم از کم 10 ہندسوں کا ہونا چاہیے۔",
   }),
@@ -43,8 +37,6 @@ const Register = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: "",
-      username: "",
-      email: "",
       phone: "",
       cnic: "",
       password: "",
@@ -55,11 +47,10 @@ const Register = () => {
     try {
       setIsSubmitting(true);
       await authRegister(
-        values.username,
-        values.email,
-        values.password,
         values.phone,
-        values.cnic
+        values.cnic,
+        values.password,
+        values.fullName
       );
       
       toast({
@@ -110,34 +101,6 @@ const Register = () => {
                   )}
                 />
                 
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-urdu text-right block">صارف کا نام</FormLabel>
-                      <FormControl>
-                        <Input placeholder="اپنا صارف نام درج کریں" {...field} className="font-urdu text-right" />
-                      </FormControl>
-                      <FormMessage className="font-urdu text-right" />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-urdu text-right block">ای میل</FormLabel>
-                      <FormControl>
-                        <Input placeholder="اپنی ای میل درج کریں" {...field} className="font-urdu text-right" />
-                      </FormControl>
-                      <FormMessage className="font-urdu text-right" />
-                    </FormItem>
-                  )}
-                />
-
                 <FormField
                   control={form.control}
                   name="phone"
