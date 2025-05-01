@@ -56,7 +56,7 @@ const Campaigns = () => {
           >
             <div className="h-48 overflow-hidden relative">
               <img 
-                src={campaign.image_url || "https://placehold.co/600x400?text=Campaign+Image"} 
+                src={campaign.image} 
                 alt={campaign.title} 
                 className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
               />
@@ -83,17 +83,31 @@ const Campaigns = () => {
               <div className="bg-muted/20 p-4 rounded-lg">
                 <div className="flex justify-between mb-2">
                   <span className="font-medium">پیش رفت</span>
-                  <span>{calculateProgress(campaign.current_amount, campaign.target_amount)}%</span>
+                  <span>{calculateProgress(campaign.collected_amount, campaign.target_amount)}%</span>
                 </div>
                 <Progress 
-                  value={calculateProgress(campaign.current_amount, campaign.target_amount)}
+                  value={calculateProgress(campaign.collected_amount, campaign.target_amount)}
                   className="h-2 bg-muted"
                 />
                 <div className="flex justify-between mt-2 text-sm">
-                  <span>جمع شدہ: {campaign.current_amount.toLocaleString()} روپے</span>
+                  <span>جمع شدہ: {campaign.collected_amount.toLocaleString()} روپے</span>
                   <span>ہدف: {campaign.target_amount.toLocaleString()} روپے</span>
                 </div>
               </div>
+              
+              {campaign.donors && campaign.donors.length > 0 && (
+                <div>
+                  <h4 className="font-medium mb-3">حالیہ عطیہ دہندگان:</h4>
+                  <ul className="space-y-2">
+                    {campaign.donors.slice(0, 3).map((donor, index) => (
+                      <li key={index} className="flex justify-between bg-muted/10 p-2 rounded">
+                        <span>{donor.name}</span>
+                        <span className="text-primary">{donor.amount.toLocaleString()} روپے</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </CardContent>
             
             <CardFooter className="flex gap-4">

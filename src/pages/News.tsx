@@ -1,13 +1,11 @@
 
 import { useEffect, useState } from "react";
-import { Post as ApiPost } from "@/types/api";
-import { Post as UiPost } from "@/types/post";
+import { Post } from "@/types/post";
 import { getPostsByDateRange } from "@/services/postService";
 import NewsCard from "@/components/NewsCard";
-import { convertToUiPost } from "@/utils/dataConversion";
 
 const News = () => {
-  const [posts, setPosts] = useState<UiPost[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,19 +14,9 @@ const News = () => {
       const startDate = new Date();
       startDate.setDate(endDate.getDate() - 3);
       
-      // Format dates as strings for the API
-      const startDateStr = startDate.toISOString().split('T')[0];
-      const endDateStr = endDate.toISOString().split('T')[0];
-      
-      try {
-        const recentPosts = await getPostsByDateRange(startDateStr, endDateStr);
-        const uiPosts = recentPosts.map(post => convertToUiPost(post));
-        setPosts(uiPosts);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false);
-      }
+      const recentPosts = await getPostsByDateRange(startDate, endDate);
+      setPosts(recentPosts);
+      setLoading(false);
     };
 
     fetchRecentPosts();

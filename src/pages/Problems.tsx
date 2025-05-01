@@ -1,145 +1,95 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Problem } from "@/types/api";
 import { problemService } from "@/services/problemService";
 import ProblemCard from "@/components/ProblemCard";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import { Problem, ProblemCreateRequest } from "@/types/api";
+import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
 
 const Problems = () => {
-  const { toast } = useToast();
-  const [newProblem, setNewProblem] = useState({
-    title: "",
-    description: "",
-    imageUrl: "",
-  });
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  const { data: problems, isLoading, error, refetch } = useQuery({
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  const { 
+    data: problems = [], 
+    isLoading, 
+    error 
+  } = useQuery({
     queryKey: ['problems'],
     queryFn: problemService.getAllProblems
   });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newProblem.title.trim() || !newProblem.description.trim()) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      await problemService.createProblem({
-        title: newProblem.title,
-        description: newProblem.description,
-        image_url: newProblem.imageUrl || undefined,
-      });
-
-      toast({
-        title: "Success",
-        description: "Problem reported successfully",
-      });
-
-      setNewProblem({ title: "", description: "", imageUrl: "" });
-      setDialogOpen(false);
-      refetch();
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to submit problem. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
+  
+  // Filter problems based on search term
+  const filteredProblems = searchTerm
+    ? problems.filter(p => 
+        p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.description.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : problems;
 
   const handleProblemUpdate = (updatedProblem: Problem) => {
-    // Handle problem updates if needed
-    refetch();
+    // This is handled by React Query's cache now
+  };
+
+  const handleSearch = () => {
+    // Search is handled by the filteredProblems variable
   };
 
   if (isLoading) {
-    return <div className="container mx-auto px-4 py-8 font-urdu">...لوڈ ہو رہا ہے</div>;
+    return (
+      <div className="container mx-auto px-4 py-8 font-urdu">
+        <div className="text-center">لوڈ ہو رہا ہے...</div>
+      </div>
+    );
   }
 
   if (error) {
     console.error("Error fetching problems:", error);
-    return <div className="container mx-auto px-4 py-8 font-urdu">مسائل لوڈ کرنے میں مسئلہ آ گیا</div>;
+    return (
+      <div className="container mx-auto px-4 py-8 font-urdu">
+        <div className="text-center">مسائل لوڈ کرنے میں مسئلہ آ گیا</div>
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold font-urdu">کمیونٹی مسائل</h1>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-gradient-primary hover:opacity-90 font-urdu">
-              نیا مسئلہ رپورٹ کریں
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[550px]">
-            <DialogHeader>
-              <DialogTitle className="font-urdu text-right">نیا مسئلہ رپورٹ کریں</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="title" className="font-urdu text-right block">عنوان</Label>
-                <Input
-                  id="title"
-                  value={newProblem.title}
-                  onChange={(e) => setNewProblem({...newProblem, title: e.target.value})}
-                  placeholder="مسئلہ کا عنوان درج کریں"
-                  className="w-full mt-1 text-right font-urdu"
-                />
-              </div>
-              <div>
-                <Label htmlFor="description" className="font-urdu text-right block">تفصیل</Label>
-                <Textarea
-                  id="description"
-                  value={newProblem.description}
-                  onChange={(e) => setNewProblem({...newProblem, description: e.target.value})}
-                  placeholder="مسئلہ کی تفصیل درج کریں"
-                  className="w-full mt-1 text-right font-urdu"
-                  rows={4}
-                />
-              </div>
-              <div>
-                <Label htmlFor="imageUrl" className="font-urdu text-right block">تصویر کا URL (اختیاری)</Label>
-                <Input
-                  id="imageUrl"
-                  value={newProblem.imageUrl}
-                  onChange={(e) => setNewProblem({...newProblem, imageUrl: e.target.value})}
-                  placeholder="تصویر کا URL درج کریں"
-                  className="w-full mt-1 text-right font-urdu"
-                />
-              </div>
-              <div className="flex justify-end gap-4 pt-4">
-                <Button type="button" variant="outline" onClick={() => setDialogOpen(false)} className="font-urdu">منسوخ کریں</Button>
-                <Button type="submit" className="bg-gradient-primary hover:opacity-90 font-urdu">جمع کریں</Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
+    <div className="container mx-auto px-4 py-8 font-urdu">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-[#8F62D5] to-[#7091E7]">
+          گاؤں کے مسائل
+        </h1>
+        <p className="text-muted-foreground mb-6">
+          اپنے گاؤں کے مسائل سے آگاہ کریں اور اُن کے حل میں اپنا کردار ادا کریں
+        </p>
+        
+        <div className="max-w-md mx-auto flex gap-2 mb-8">
+          <Input
+            placeholder="مسئلے کو تلاش کریں..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            className="border-[#8F62D5]/30 focus-visible:ring-[#8F62D5]"
+          />
+          <Button onClick={handleSearch} className="bg-[#8F62D5] hover:bg-[#7E54C8]">
+            <Search size={18} />
+          </Button>
+        </div>
       </div>
-
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {problems && problems.length > 0 ? (
-          problems.map(problem => (
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredProblems.length > 0 ? (
+          filteredProblems.map(problem => (
             <ProblemCard
               key={problem.id}
               problem={problem}
-              onUpdate={handleProblemUpdate}
+              onProblemUpdate={handleProblemUpdate}
             />
           ))
         ) : (
-          <p className="text-center text-muted-foreground col-span-3 font-urdu">کوئی مسائل نہیں ملے</p>
+          <div className="col-span-3 text-center py-10">
+            <p className="text-muted-foreground">کوئی مسئلہ نہیں ملا۔</p>
+          </div>
         )}
       </div>
     </div>

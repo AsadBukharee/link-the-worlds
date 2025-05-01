@@ -12,7 +12,7 @@ class ApiClient {
   }
 
   // Method to get stored tokens
-  getTokens(): { access: string; refresh: string; user?: any } | null {
+  getTokens(): { access: string; refresh: string } | null {
     const tokensJson = localStorage.getItem(TOKEN_KEY);
     if (!tokensJson) return null;
     
@@ -83,31 +83,6 @@ class ApiClient {
       method: "POST",
       headers,
       body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status} ${response.statusText}`);
-    }
-
-    return await response.json();
-  }
-
-  // Method for POST requests with FormData (file uploads)
-  async postFormData<T>(endpoint: string, formData: FormData, authenticated = false): Promise<T> {
-    const headers: Record<string, string> = {};
-
-    if (authenticated) {
-      const tokens = this.getTokens();
-      if (!tokens) {
-        throw new Error("Authentication required but no tokens available");
-      }
-      headers["Authorization"] = `Bearer ${tokens.access}`;
-    }
-
-    const response = await fetch(`${this.baseUrl}${endpoint}`, {
-      method: "POST",
-      headers,
-      body: formData,
     });
 
     if (!response.ok) {

@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -16,6 +15,12 @@ import { useAuth } from "@/contexts/AuthContext";
 const formSchema = z.object({
   fullName: z.string().min(2, {
     message: "پورا نام کم از کم 2 حروف کا ہونا چاہیے۔",
+  }),
+  username: z.string().min(3, {
+    message: "صارف کا نام کم از کم 3 حروف کا ہونا چاہیے۔",
+  }),
+  email: z.string().email({
+    message: "برائے مہربانی ایک درست ای میل ایڈریس درج کریں۔",
   }),
   phone: z.string().min(10, {
     message: "فون نمبر کم از کم 10 ہندسوں کا ہونا چاہیے۔",
@@ -32,13 +37,14 @@ const formSchema = z.object({
 
 const Register = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { register: authRegister, setRegisteredPhone } = useAuth();
-  const navigate = useNavigate();
+  const { register: authRegister } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: "",
+      username: "",
+      email: "",
       phone: "",
       cnic: "",
       password: "",
@@ -49,19 +55,18 @@ const Register = () => {
     try {
       setIsSubmitting(true);
       await authRegister(
-        values.phone,
-        values.cnic,
+        values.username,
+        values.email,
         values.password,
-        values.fullName
+        values.phone,
+        values.cnic
       );
       
       toast({
         title: "رجسٹریشن کامیاب",
-        description: "براہ کرم اپنے فون نمبر پر موصول ہونے والا OTP درج کریں۔",
+        description: "آپ فلاحی گاؤں کمیونٹی میں رجسٹر ہو چکے ہیں۔",
       });
-      
-      // Navigate to OTP verification page
-      navigate("/verify-otp");
+      form.reset();
     } catch (error) {
       console.error("Registration error:", error);
       toast({
@@ -105,6 +110,34 @@ const Register = () => {
                   )}
                 />
                 
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-urdu text-right block">صارف کا نام</FormLabel>
+                      <FormControl>
+                        <Input placeholder="اپنا صارف نام درج کریں" {...field} className="font-urdu text-right" />
+                      </FormControl>
+                      <FormMessage className="font-urdu text-right" />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-urdu text-right block">ای میل</FormLabel>
+                      <FormControl>
+                        <Input placeholder="اپنی ای میل درج کریں" {...field} className="font-urdu text-right" />
+                      </FormControl>
+                      <FormMessage className="font-urdu text-right" />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField
                   control={form.control}
                   name="phone"
