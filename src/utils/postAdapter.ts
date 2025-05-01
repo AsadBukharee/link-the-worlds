@@ -1,6 +1,7 @@
 
 import { Post as ApiPost } from "@/types/api";
 import { Post as LocalPost } from "@/types/post";
+import { ensureValidDateString } from "./dateAdapter";
 
 export const adaptApiPostToLocalPost = (apiPost: ApiPost): LocalPost => {
   return {
@@ -8,7 +9,7 @@ export const adaptApiPostToLocalPost = (apiPost: ApiPost): LocalPost => {
     title: apiPost.title,
     content: apiPost.content,
     author: apiPost.author.username,
-    date: apiPost.created_at,
+    date: ensureValidDateString(apiPost.created_at),
     imageUrl: apiPost.image_url
   };
 };

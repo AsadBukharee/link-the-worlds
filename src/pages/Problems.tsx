@@ -8,6 +8,7 @@ import ProblemCard from "@/components/ProblemCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
+import { ensureValidDateString } from "@/utils/dateAdapter";
 
 // Adapter function to convert API Problem to Local Problem
 const adaptApiProblemToLocalProblem = (apiProblem: ApiProblem): LocalProblem => {
@@ -16,13 +17,13 @@ const adaptApiProblemToLocalProblem = (apiProblem: ApiProblem): LocalProblem => 
     title: apiProblem.title,
     description: apiProblem.description,
     author: apiProblem.author?.username || "Unknown",
-    date: apiProblem.created_at || new Date().toISOString(),
+    date: ensureValidDateString(apiProblem.created_at),
     votes: apiProblem.votes,
     comments: apiProblem.comments?.map(comment => ({
       id: comment.id.toString(),
       author: comment.author.username,
       text: comment.text,
-      date: comment.created_at
+      date: ensureValidDateString(comment.created_at)
     })) || [],
     imageUrl: apiProblem.image_url,
     hasVoted: apiProblem.has_voted

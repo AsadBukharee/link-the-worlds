@@ -9,6 +9,7 @@ import { toast } from "@/components/ui/use-toast";
 import { formatDistance } from "date-fns";
 import { ThumbsUp, MessageSquare } from "lucide-react";
 import { problemService } from "@/services/problemService";
+import { ensureValidDate } from "@/utils/dateAdapter";
 
 // Adapter function to convert API Problem to Local Problem
 const adaptApiProblemToLocalProblem = (apiProblem: ApiProblem): LocalProblem => {
@@ -42,7 +43,12 @@ const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
   const [isVoting, setIsVoting] = useState(false);
   const [isCommenting, setIsCommenting] = useState(false);
 
-  const timeAgo = formatDistance(new Date(problem.date), new Date(), { addSuffix: true });
+  // Ensure we have a valid date before formatting
+  const timeAgo = formatDistance(
+    ensureValidDate(problem.date), 
+    new Date(), 
+    { addSuffix: true }
+  );
 
   const handleVote = async () => {
     if (isVoting || problem.hasVoted) return;
@@ -171,7 +177,11 @@ const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
                     <div className="flex justify-between">
                       <p className="font-medium text-sm">{comment.author}</p>
                       <p className="text-xs text-muted-foreground">
-                        {formatDistance(new Date(comment.date), new Date(), { addSuffix: true })}
+                        {formatDistance(
+                          ensureValidDate(comment.date), 
+                          new Date(), 
+                          { addSuffix: true }
+                        )}
                       </p>
                     </div>
                     <p className="mt-1 text-sm">{comment.text}</p>
