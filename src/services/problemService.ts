@@ -24,8 +24,8 @@ export const problemService = {
   },
 
   // Vote for a problem
-  async voteForProblem(problemId: number): Promise<Problem> {
-    return await apiClient.post<Problem>(
+  async voteForProblem(problemId: number): Promise<{ votes: number }> {
+    return await apiClient.post<{ votes: number }>(
       API_ENDPOINTS.PROBLEM_VOTE(problemId), 
       {}, 
       true
@@ -36,18 +36,11 @@ export const problemService = {
   async addCommentToProblem(
     problemId: number, 
     commentData: CommentCreateRequest
-  ): Promise<Problem> {
-    return await apiClient.post<Problem>(
+  ): Promise<ProblemComment> {
+    return await apiClient.post<ProblemComment>(
       API_ENDPOINTS.PROBLEM_COMMENTS(problemId), 
       commentData, 
       true
     );
   }
 };
-
-// Export individual functions
-export const getAllProblems = problemService.getAllProblems;
-export const getProblemById = problemService.getProblemById;
-export const createProblem = problemService.createProblem;
-export const voteForProblem = problemService.voteForProblem;
-export const addCommentToProblem = problemService.addCommentToProblem;

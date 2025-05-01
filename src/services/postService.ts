@@ -3,7 +3,6 @@ import { apiClient } from "./apiClient";
 import { API_ENDPOINTS } from "@/config/api";
 import { Post, PostCreateRequest, PostUpdateRequest } from "@/types/api";
 
-// Export the entire service object
 export const postService = {
   // Get all posts
   async getAllPosts(): Promise<Post[]> {
@@ -44,20 +43,9 @@ export const postService = {
   },
 
   // Get posts by date range
-  async getPostsByDateRange(startDate: Date, endDate: Date): Promise<Post[]> {
-    const formattedStartDate = startDate.toISOString().split('T')[0];
-    const formattedEndDate = endDate.toISOString().split('T')[0];
+  async getPostsByDateRange(startDate: string, endDate: string): Promise<Post[]> {
     return await apiClient.get<Post[]>(
-      `${API_ENDPOINTS.POSTS_BY_DATE}?start_date=${formattedStartDate}&end_date=${formattedEndDate}`
+      `${API_ENDPOINTS.POSTS_BY_DATE}?start_date=${startDate}&end_date=${endDate}`
     );
   }
 };
-
-// Export individual functions
-export const getAllPosts = postService.getAllPosts;
-export const getRecentPosts = postService.getRecentPosts;
-export const getPostById = postService.getPostById;
-export const createPost = postService.createPost;
-export const updatePost = postService.updatePost;
-export const deletePost = postService.deletePost;
-export const getPostsByDateRange = postService.getPostsByDateRange;

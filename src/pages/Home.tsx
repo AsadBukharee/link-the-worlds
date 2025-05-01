@@ -1,32 +1,24 @@
+
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ThreeDCarousel } from "@/components/ui/3d-carousel";
-import { homeCarouselData } from "@/data/carouselData";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { getRecentPosts } from "@/services/postService";
 import { Post } from "@/types/post";
 import NewsCard from "@/components/NewsCard";
 import Lottie from "lottie-react";
 import registrationAnimation from "../assets/animations/registration.json";
 import donateAnimation from "../assets/animations/donate.json";
 import sponsorAnimation from "../assets/animations/sponsor.json";
-import { getRecentPosts } from "@/services/postService";
-import { adaptApiPostsToLocalPosts } from "@/utils/postAdapter";
 
 const Home = () => {
   const [recentNews, setRecentNews] = useState<Post[]>([]);
 
   useEffect(() => {
     const fetchNews = async () => {
-      try {
-        const posts = await getRecentPosts();
-        const adaptedPosts = adaptApiPostsToLocalPosts(posts);
-        setRecentNews(adaptedPosts.slice(0, 3));
-      } catch (error) {
-        console.error("Error fetching recent posts:", error);
-        // Fallback to empty array if API fails
-        setRecentNews([]);
-      }
+      const posts = await getRecentPosts();
+      setRecentNews(posts.slice(0, 3));
     };
     fetchNews();
   }, []);
@@ -50,11 +42,133 @@ const Home = () => {
       
       {/* Content over the video background */}
       <div className="relative z-10">
-        {/* Hero Section with 3D Carousel */}
-        <section className="min-h-[80vh] flex items-center justify-center px-4 py-16">
-          <div className="container mx-auto max-w-6xl">
-            <ThreeDCarousel cards={homeCarouselData} />
-          </div>
+        {/* Hero Carousel Section */}
+        <section className="mb-10 w-full">
+          <Carousel className="w-full">
+            <CarouselContent>
+              <CarouselItem>
+                <div className="relative h-[400px] w-full overflow-hidden">
+                  <img 
+                    src="https://i.pinimg.com/736x/f2/1b/5a/f21b5a673c08176ce955f61ab1b962bd.jpg" 
+                    alt="Village Image 1" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
+                    <div className="text-white max-w-xl">
+                      <h1 className="text-4xl md:text-6xl font-bold mb-4 font-urdu">ہمارا64</h1>
+                      <p className="text-xl md:text-2xl mb-8 font-urdu">آئیے اپنے گاؤں کو جنت بنائیں</p>
+                      <div className="flex flex-wrap gap-4">
+                        <Button asChild size="lg" className="bg-gradient-primary hover:opacity-90">
+                          <Link to="/register" className="font-urdu">رجسٹر کریں</Link>
+                        </Button>
+                        <Button asChild variant="outline" size="lg" className="bg-white/10 backdrop-blur-sm hover:bg-white/20">
+                          <Link to="/donate" className="font-urdu">عطیہ دیں</Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+              
+              <CarouselItem>
+                <div className="relative h-[400px] w-full overflow-hidden">
+                  <img 
+                    src="https://i.pinimg.com/736x/02/97/08/029708f69b207abce677c54ba19e48b9.jpg" 
+                    alt="Village Image 2" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
+                    <div className="text-white max-w-xl">
+                      <h2 className="text-4xl md:text-6xl font-bold mb-4 font-urdu">ایک ساتھ تعمیر کریں</h2>
+                      <p className="text-xl md:text-2xl mb-8 font-urdu">بہتر مستقبل بنانے میں ہمارے ساتھ شامل ہوں</p>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+              
+              <CarouselItem>
+                <div className="relative h-[400px] w-full overflow-hidden">
+                  <img 
+                    src="https://i.pinimg.com/736x/43/76/e4/4376e4508b4022a804bd4c92a1dcb74b.jpg" 
+                    alt="Village Image 3" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
+                    <div className="text-white max-w-xl">
+                      <h2 className="text-4xl md:text-6xl font-bold mb-4 font-urdu">تعلیم کو بااختیار بنانا</h2>
+                      <p className="text-xl md:text-2xl mb-8 font-urdu">ہماری آنے والی نسلوں کو سہارا دیں</p>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+              
+              <CarouselItem>
+                <div className="relative h-[400px] w-full overflow-hidden">
+                  <img 
+                    src="https://i.pinimg.com/736x/ed/67/3f/ed673fefd644bdfc9ef3d3d8a9c0b5ea.jpg" 
+                    alt="Village Image 4" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
+                    <div className="text-white max-w-xl">
+                      <h2 className="text-4xl md:text-6xl font-bold mb-4 font-urdu">روایات اور ثقافت</h2>
+                      <p className="text-xl md:text-2xl mb-8 font-urdu">ہماری روایات کو زندہ رکھنے میں مدد کریں</p>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+              
+              <CarouselItem>
+                <div className="relative h-[400px] w-full overflow-hidden">
+                  <img 
+                    src="https://i.pinimg.com/736x/8c/f5/12/8cf512bfe0560b9fa2ce7416da226085.jpg" 
+                    alt="Village Image 5" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
+                    <div className="text-white max-w-xl">
+                      <h2 className="text-4xl md:text-6xl font-bold mb-4 font-urdu">ترقی کی راہ</h2>
+                      <p className="text-xl md:text-2xl mb-8 font-urdu">ہماری کمیونٹی کی ترقی میں حصہ ڈالیں</p>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+              
+              <CarouselItem>
+                <div className="relative h-[400px] w-full overflow-hidden">
+                  <img 
+                    src="https://i.pinimg.com/736x/8e/51/6d/8e516da1233cfa12ac1ba0e8f091fa78.jpg" 
+                    alt="Village Image 6" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
+                    <div className="text-white max-w-xl">
+                      <h2 className="text-4xl md:text-6xl font-bold mb-4 font-urdu">زراعت کی اہمیت</h2>
+                      <p className="text-xl md:text-2xl mb-8 font-urdu">ہماری فصلوں کی کامیابی میں حصہ لیں</p>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+              
+              <CarouselItem>
+                <div className="relative h-[400px] w-full overflow-hidden">
+                  <img 
+                    src="https://i.pinimg.com/736x/7a/25/d7/7a25d74c354198350ba0ced8b8861d58.jpg" 
+                    alt="Village Image 7" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-10">
+                    <div className="text-white max-w-xl">
+                      <h2 className="text-4xl md:text-6xl font-bold mb-4 font-urdu">مستقبل کی تعمیر</h2>
+                      <p className="text-xl md:text-2xl mb-8 font-urdu">آنے والی نسلوں کے لیے بہتر دنیا بنائیں</p>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+            </CarouselContent>
+            <CarouselPrevious className="left-4" />
+            <CarouselNext className="right-4" />
+          </Carousel>
         </section>
 
         {/* Features Grid with Left 20% blank and Right 20% promo card */}

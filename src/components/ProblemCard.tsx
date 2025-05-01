@@ -1,6 +1,6 @@
+
 import { useState } from "react";
-import { Problem as LocalProblem } from "@/types/problem";
-import { Problem as ApiProblem } from "@/types/api";
+import { Problem } from "@/types/problem";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,32 +8,11 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { formatDistance } from "date-fns";
 import { ThumbsUp, MessageSquare } from "lucide-react";
-import { problemService } from "@/services/problemService";
-import { ensureValidDate } from "@/utils/dateAdapter";
-
-// Adapter function to convert API Problem to Local Problem
-const adaptApiProblemToLocalProblem = (apiProblem: ApiProblem): LocalProblem => {
-  return {
-    id: apiProblem.id.toString(),
-    title: apiProblem.title,
-    description: apiProblem.description,
-    author: apiProblem.author.username,
-    date: apiProblem.created_at,
-    votes: apiProblem.votes,
-    comments: apiProblem.comments?.map(comment => ({
-      id: comment.id.toString(),
-      author: comment.author.username,
-      text: comment.text,
-      date: comment.created_at
-    })) || [],
-    imageUrl: apiProblem.image_url,
-    hasVoted: apiProblem.has_voted
-  };
-};
+import { voteForProblem, addCommentToProblem } from "@/services/problemService";
 
 interface ProblemCardProps {
-  problem: LocalProblem;
-  onProblemUpdate: (updatedProblem: LocalProblem) => void;
+  problem: Problem;
+  onProblemUpdate: (updatedProblem: Problem) => void;
 }
 
 const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
@@ -43,12 +22,7 @@ const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
   const [isVoting, setIsVoting] = useState(false);
   const [isCommenting, setIsCommenting] = useState(false);
 
-  // Ensure we have a valid date before formatting
-  const timeAgo = formatDistance(
-    ensureValidDate(problem.date), 
-    new Date(), 
-    { addSuffix: true }
-  );
+  const timeAgo = formatDistance(new Date(problem.date), new Date(), { addSuffix: true });
 
   const handleVote = async () => {
     if (isVoting || problem.hasVoted) return;
@@ -68,14 +42,14 @@ const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
         return;
       }
       
-      const apiProblem = await problemService.voteForProblem(parseInt(problem.id));
-      const updatedProblem = adaptApiProblemToLocalProblem(apiProblem);
-      
-      onProblemUpdate(updatedProblem);
-      toast({
-        title: "ووٹ کامیاب",
-        description: "آپ کا ووٹ کامیابی سے شامل کر لیا گیا ہے",
-      });
+      const updatedProblem = await voteForProblem(problem.id, true);
+      if (updatedProblem) {
+        onProblemUpdate(updatedProblem);
+        toast({
+          title: "ووٹ کامیاب",
+          description: "آپ کا ووٹ کامیابی سے شامل کر لیا گیا ہے",
+        });
+      }
     } catch (error) {
       toast({
         title: "خطا",
@@ -92,18 +66,20 @@ const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
     
     setIsCommenting(true);
     try {
-      const apiProblem = await problemService.addCommentToProblem(parseInt(problem.id), {
+      const updatedProblem = await addCommentToProblem(problem.id, {
+        author: commentAuthor,
         text: newComment
       });
       
-      const updatedProblem = adaptApiProblemToLocalProblem(apiProblem);
-      onProblemUpdate(updatedProblem);
-      setNewComment("");
-      setCommentAuthor("");
-      toast({
-        title: "تبصرہ شامل ہو گیا",
-        description: "آپ کا تبصرہ کامیابی سے شامل کر لیا گیا ہے",
-      });
+      if (updatedProblem) {
+        onProblemUpdate(updatedProblem);
+        setNewComment("");
+        setCommentAuthor("");
+        toast({
+          title: "تبصرہ شامل ہو گیا",
+          description: "آپ کا تبصرہ کامیابی سے شامل کر لیا گیا ہے",
+        });
+      }
     } catch (error) {
       toast({
         title: "خطا",
@@ -177,11 +153,7 @@ const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
                     <div className="flex justify-between">
                       <p className="font-medium text-sm">{comment.author}</p>
                       <p className="text-xs text-muted-foreground">
-                        {formatDistance(
-                          ensureValidDate(comment.date), 
-                          new Date(), 
-                          { addSuffix: true }
-                        )}
+                        {formatDistance(new Date(comment.date), new Date(), { addSuffix: true })}
                       </p>
                     </div>
                     <p className="mt-1 text-sm">{comment.text}</p>

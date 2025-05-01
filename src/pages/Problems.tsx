@@ -1,70 +1,35 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Problem as ApiProblem } from "@/types/api";
-import { Problem as LocalProblem } from "@/types/problem";
+import { Problem } from "@/types/api";
 import { problemService } from "@/services/problemService";
 import ProblemCard from "@/components/ProblemCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
-import { ensureValidDateString } from "@/utils/dateAdapter";
-
-// Adapter function to convert API Problem to Local Problem
-const adaptApiProblemToLocalProblem = (apiProblem: ApiProblem): LocalProblem => {
-  return {
-    id: apiProblem.id.toString(),
-    title: apiProblem.title,
-    description: apiProblem.description,
-    author: apiProblem.author?.username || "Unknown",
-    date: ensureValidDateString(apiProblem.created_at),
-    votes: apiProblem.votes,
-    comments: apiProblem.comments?.map(comment => ({
-      id: comment.id.toString(),
-      author: comment.author.username,
-      text: comment.text,
-      date: ensureValidDateString(comment.created_at)
-    })) || [],
-    imageUrl: apiProblem.image_url,
-    hasVoted: apiProblem.has_voted
-  };
-};
 
 const Problems = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [localProblems, setLocalProblems] = useState<LocalProblem[]>([]);
   
   const { 
-    data: apiProblems = [], 
+    data: problems = [], 
     isLoading, 
-    error,
-    isSuccess 
+    error 
   } = useQuery({
     queryKey: ['problems'],
     queryFn: problemService.getAllProblems
   });
   
-  // Use useEffect to handle the success case
-  useEffect(() => {
-    if (isSuccess && apiProblems) {
-      // Convert API problems to local problem format
-      const converted = apiProblems.map(adaptApiProblemToLocalProblem);
-      setLocalProblems(converted);
-    }
-  }, [isSuccess, apiProblems]);
-  
   // Filter problems based on search term
   const filteredProblems = searchTerm
-    ? localProblems.filter(p => 
+    ? problems.filter(p => 
         p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         p.description.toLowerCase().includes(searchTerm.toLowerCase())
       )
-    : localProblems;
+    : problems;
 
-  const handleProblemUpdate = (updatedProblem: LocalProblem) => {
-    setLocalProblems(prev => 
-      prev.map(p => p.id === updatedProblem.id ? updatedProblem : p)
-    );
+  const handleProblemUpdate = (updatedProblem: Problem) => {
+    // This is handled by React Query's cache now
   };
 
   const handleSearch = () => {
