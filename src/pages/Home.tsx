@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,14 +11,22 @@ import registrationAnimation from "../assets/animations/registration.json";
 import donateAnimation from "../assets/animations/donate.json";
 import sponsorAnimation from "../assets/animations/sponsor.json";
 import { getRecentPosts } from "@/services/postService";
+import { adaptApiPostsToLocalPosts } from "@/utils/postAdapter";
 
 const Home = () => {
   const [recentNews, setRecentNews] = useState<Post[]>([]);
 
   useEffect(() => {
     const fetchNews = async () => {
-      const posts = await getRecentPosts();
-      setRecentNews(posts.slice(0, 3));
+      try {
+        const posts = await getRecentPosts();
+        const adaptedPosts = adaptApiPostsToLocalPosts(posts);
+        setRecentNews(adaptedPosts.slice(0, 3));
+      } catch (error) {
+        console.error("Error fetching recent posts:", error);
+        // Fallback to empty array if API fails
+        setRecentNews([]);
+      }
     };
     fetchNews();
   }, []);

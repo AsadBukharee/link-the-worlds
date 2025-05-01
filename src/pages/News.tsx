@@ -1,7 +1,6 @@
-
 import { useEffect, useState } from "react";
 import { Post } from "@/types/post";
-import { getPostsByDateRange } from "@/services/postService";
+import { getPostsByDateRange } from "@/services/mockPostService";
 import NewsCard from "@/components/NewsCard";
 import { ThreeDCarousel } from "@/components/ui/3d-carousel";
 import { newsCarouselData } from "@/data/carouselData";
@@ -12,13 +11,19 @@ const News = () => {
 
   useEffect(() => {
     const fetchRecentPosts = async () => {
-      const endDate = new Date();
-      const startDate = new Date();
-      startDate.setDate(endDate.getDate() - 3);
-      
-      const recentPosts = await getPostsByDateRange(startDate, endDate);
-      setPosts(recentPosts);
-      setLoading(false);
+      try {
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(endDate.getDate() - 3);
+        
+        const recentPosts = await getPostsByDateRange(startDate, endDate);
+        setPosts(recentPosts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        setPosts([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchRecentPosts();

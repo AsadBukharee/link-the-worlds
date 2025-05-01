@@ -1,22 +1,35 @@
 
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Post } from "@/types/api";
-import { postService } from "@/services/postService";
+import { Post } from "@/types/post";
 import NewsCard from "@/components/NewsCard";
+import { mockPostService } from "@/services/mockPostService";
 
 const Blog = () => {
-  const { data: posts, isLoading, error } = useQuery({
-    queryKey: ['recentPosts'],
-    queryFn: postService.getRecentPosts
-  });
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await mockPostService.getAllPosts();
+        setPosts(data);
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+        setError(err instanceof Error ? err : new Error("Failed to fetch posts"));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   if (isLoading) {
     return <div className="container mx-auto px-4 py-8 font-urdu">...لوڈ ہو رہا ہے</div>;
   }
 
   if (error) {
-    console.error("Error fetching posts:", error);
     return <div className="container mx-auto px-4 py-8 font-urdu">پوسٹس لوڈ کرنے میں مسئلہ آ گیا</div>;
   }
 
