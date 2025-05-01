@@ -1,6 +1,6 @@
-
 import { useState } from "react";
-import { Problem } from "@/types/problem";
+import { Problem as LocalProblem } from "@/types/problem";
+import { Problem as ApiProblem } from "@/types/api";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,11 +8,31 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { formatDistance } from "date-fns";
 import { ThumbsUp, MessageSquare } from "lucide-react";
-import { voteForProblem, addCommentToProblem } from "@/services/problemService";
+import { problemService } from "@/services/problemService";
+
+// Adapter function to convert API Problem to Local Problem
+const adaptApiProblemToLocalProblem = (apiProblem: ApiProblem): LocalProblem => {
+  return {
+    id: apiProblem.id.toString(),
+    title: apiProblem.title,
+    description: apiProblem.description,
+    author: apiProblem.author.username,
+    date: apiProblem.created_at,
+    votes: apiProblem.votes,
+    comments: apiProblem.comments?.map(comment => ({
+      id: comment.id.toString(),
+      author: comment.author.username,
+      text: comment.text,
+      date: comment.created_at
+    })) || [],
+    imageUrl: apiProblem.image_url,
+    hasVoted: apiProblem.has_voted
+  };
+};
 
 interface ProblemCardProps {
-  problem: Problem;
-  onProblemUpdate: (updatedProblem: Problem) => void;
+  problem: LocalProblem;
+  onProblemUpdate: (updatedProblem: LocalProblem) => void;
 }
 
 const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
@@ -42,14 +62,14 @@ const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
         return;
       }
       
-      const updatedProblem = await voteForProblem(problem.id, true);
-      if (updatedProblem) {
-        onProblemUpdate(updatedProblem);
-        toast({
-          title: "ووٹ کامیاب",
-          description: "آپ کا ووٹ کامیابی سے شامل کر لیا گیا ہے",
-        });
-      }
+      const apiProblem = await problemService.voteForProblem(parseInt(problem.id));
+      const updatedProblem = adaptApiProblemToLocalProblem(apiProblem);
+      
+      onProblemUpdate(updatedProblem);
+      toast({
+        title: "ووٹ کامیاب",
+        description: "آپ کا ووٹ کامیابی سے شامل کر لیا گیا ہے",
+      });
     } catch (error) {
       toast({
         title: "خطا",
@@ -66,20 +86,18 @@ const ProblemCard = ({ problem, onProblemUpdate }: ProblemCardProps) => {
     
     setIsCommenting(true);
     try {
-      const updatedProblem = await addCommentToProblem(problem.id, {
-        author: commentAuthor,
+      const apiProblem = await problemService.addCommentToProblem(parseInt(problem.id), {
         text: newComment
       });
       
-      if (updatedProblem) {
-        onProblemUpdate(updatedProblem);
-        setNewComment("");
-        setCommentAuthor("");
-        toast({
-          title: "تبصرہ شامل ہو گیا",
-          description: "آپ کا تبصرہ کامیابی سے شامل کر لیا گیا ہے",
-        });
-      }
+      const updatedProblem = adaptApiProblemToLocalProblem(apiProblem);
+      onProblemUpdate(updatedProblem);
+      setNewComment("");
+      setCommentAuthor("");
+      toast({
+        title: "تبصرہ شامل ہو گیا",
+        description: "آپ کا تبصرہ کامیابی سے شامل کر لیا گیا ہے",
+      });
     } catch (error) {
       toast({
         title: "خطا",
