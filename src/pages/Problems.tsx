@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Problem as ApiProblem } from "@/types/api";
 import { Problem as LocalProblem } from "@/types/problem";
@@ -36,16 +36,21 @@ const Problems = () => {
   const { 
     data: apiProblems = [], 
     isLoading, 
-    error 
+    error,
+    isSuccess 
   } = useQuery({
     queryKey: ['problems'],
-    queryFn: problemService.getAllProblems,
-    onSuccess: (data) => {
+    queryFn: problemService.getAllProblems
+  });
+  
+  // Use useEffect to handle the success case
+  useEffect(() => {
+    if (isSuccess && apiProblems) {
       // Convert API problems to local problem format
-      const converted = data.map(adaptApiProblemToLocalProblem);
+      const converted = apiProblems.map(adaptApiProblemToLocalProblem);
       setLocalProblems(converted);
     }
-  });
+  }, [isSuccess, apiProblems]);
   
   // Filter problems based on search term
   const filteredProblems = searchTerm
