@@ -1,54 +1,70 @@
 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Problem } from "@/types/api";
-import { problemService } from "@/services/problemService";
+import { useEffect, useState } from "react";
+import { Problem } from "@/types/problem";
+import { getAllProblems } from "@/services/problemService";
 import ProblemCard from "@/components/ProblemCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 
 const Problems = () => {
+  const [problems, setProblems] = useState<Problem[]>([]);
+  const [filteredProblems, setFilteredProblems] = useState<Problem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  
-  const { 
-    data: problems = [], 
-    isLoading, 
-    error 
-  } = useQuery({
-    queryKey: ['problems'],
-    queryFn: problemService.getAllProblems
-  });
-  
-  // Filter problems based on search term
-  const filteredProblems = searchTerm
-    ? problems.filter(p => 
-        p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : problems;
+
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        const allProblems = await getAllProblems();
+        setProblems(allProblems);
+        setFilteredProblems(allProblems);
+      } catch (error) {
+        console.error("Error fetching problems:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProblems();
+  }, []);
 
   const handleProblemUpdate = (updatedProblem: Problem) => {
-    // This is handled by React Query's cache now
+    const updatedProblems = problems.map(p => 
+      p.id === updatedProblem.id ? updatedProblem : p
+    ).sort((a, b) => b.votes - a.votes);
+    
+    setProblems(updatedProblems);
+    
+    // Apply current filter to the updated problems
+    if (searchTerm) {
+      const filtered = updatedProblems.filter(p => 
+        p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredProblems(filtered);
+    } else {
+      setFilteredProblems(updatedProblems);
+    }
   };
 
   const handleSearch = () => {
-    // Search is handled by the filteredProblems variable
+    if (!searchTerm.trim()) {
+      setFilteredProblems(problems);
+      return;
+    }
+    
+    const filtered = problems.filter(p => 
+      p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredProblems(filtered);
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="container mx-auto px-4 py-8 font-urdu">
         <div className="text-center">لوڈ ہو رہا ہے...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    console.error("Error fetching problems:", error);
-    return (
-      <div className="container mx-auto px-4 py-8 font-urdu">
-        <div className="text-center">مسائل لوڈ کرنے میں مسئلہ آ گیا</div>
       </div>
     );
   }
